@@ -80,7 +80,7 @@ h2 + .lead, h2 + p { margin-top: clamp(16px, 2vw, 26px); }
 @keyframes zoom { from { transform: scale(1.03); } to { transform: scale(1.13); } }
 /* лёгкая вуаль по всему кадру и затемнение под текстом сверху и снизу */
 .hero::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(14, 22, 30, .5) 0%, rgba(14, 22, 30, .3) 30%, rgba(14, 22, 30, .24) 50%, rgba(14, 22, 30, .5) 74%, rgba(14, 22, 30, .82) 100%); }
-.hero__head { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; justify-content: center; padding: 0 var(--pad) clamp(6px, 2vh, 26px); text-align: center; container-type: inline-size; animation: up 1.1s var(--e) both; }
+.hero__head { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; justify-content: center; padding: 0 var(--pad) clamp(6px, 2vh, 26px); text-align: left; container-type: inline-size; animation: up 1.1s var(--e) both; }
 .hero__eyebrow { font-size: clamp(1rem, 1.25vw, 1.1875rem); line-height: 1.35; }
 /* 5,48 em — ширина слова CHARISMATA в шрифте Forum: 18,2cqw растягивает его на всю ширину; скрипт уточняет размер */
 .hero__title { margin-top: clamp(8px, 1.4vh, 16px); font: 400 16vw/.84 var(--f-logo); font-size: 18.2cqw; letter-spacing: .012em; white-space: nowrap; color: #fff; text-shadow: 0 2px 44px rgba(10, 16, 22, .36); }
@@ -377,6 +377,7 @@ h2 + .lead, h2 + p { margin-top: clamp(16px, 2vw, 26px); }
   .hdr, .menu__top { height: 72px; }
   .hdr__logo, .menu__logo { font-size: 1.1rem; letter-spacing: .2em; }
   .hero { min-height: 600px; }
+  .hero__head { text-align: center; }
   .hero__eyebrow { max-width: 19em; margin-inline: auto; font-size: .9375rem; line-height: 1.3; text-wrap: balance; }
   .hero__title { margin-top: 12px; }
   .hero__foot { flex-direction: column; align-items: flex-start; gap: 14px; }

@@ -63,6 +63,7 @@
       doc.body.style.overflow = open ? 'hidden' : '';
     };
     burger.addEventListener('click', () => setMenu(!html.classList.contains('menu-open')));
+    $$('[data-menu-close]', menu).forEach(b => b.addEventListener('click', () => { setMenu(false); burger.focus(); }));
     $$('a', menu).forEach(a => a.addEventListener('click', () => setMenu(false)));
     addEventListener('keydown', e => { if (e.key === 'Escape') setMenu(false); });
     addEventListener('resize', () => { if (innerWidth > 1080) setMenu(false); });
@@ -71,12 +72,14 @@
   /* ───────── Первый экран ───────── */
   const hero = $('[data-hero]');
   if (hero) {
-    // Название — ровно по ширине экрана
+    // Название — ровно по ширине экрана: уточняем размер шрифта, заданный в стилях
     const title = $('.hero__title', hero), word = $('.hero__word', hero);
     const fit = () => {
-      word.style.transform = 'none';
-      const k = title.clientWidth / word.offsetWidth;
-      if (k > 0 && isFinite(k)) word.style.transform = 'scale(' + Math.min(k, 1.4).toFixed(4) + ')';
+      title.style.fontSize = '';
+      const avail = title.clientWidth, w = word.getBoundingClientRect().width;
+      if (!avail || !w) return;
+      const fs = parseFloat(getComputedStyle(title).fontSize) * (avail / w);
+      title.style.fontSize = Math.min(fs, innerHeight * 0.34).toFixed(2) + 'px';
     };
     fit();
     if (doc.fonts && doc.fonts.ready) doc.fonts.ready.then(fit);

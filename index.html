@@ -25,20 +25,11 @@
 
 <a class="skip" href="#about">Перейти к содержанию</a>
 
-<header class="hdr" id="hdr">
-  <a class="hdr__logo" href="#top" aria-label="CHARISMATA — в начало страницы">CHARISMATA</a>
-  <nav class="hdr__nav" aria-label="Основная навигация">
-    <a href="#about">О программе</a>
-    <a href="#marina">Марина Нахалова</a>
-    <a href="#program">Семь дней</a>
-    <a href="#space">Место</a>
-    <a href="#join">Стоимость</a>
-  </nav>
-  <a class="btn btn--light btn--sm hdr__cta" href="apply.html">Подать заявку</a>
-  <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="menu"><i></i><i></i></button>
-</header>
-
 <div class="menu" id="menu" aria-hidden="true">
+  <div class="menu__top">
+    <span class="menu__logo">CHARISMATA</span>
+    <button class="menu__close" type="button" aria-label="Закрыть меню" data-menu-close><i></i><i></i></button>
+  </div>
   <nav class="menu__nav" aria-label="Меню">
     <a href="#about">О программе</a>
     <a href="#for">Кому подходит</a>
@@ -55,6 +46,19 @@
 
 <!-- Первый экран: фильм из кадров усадьбы, кадры сменяются сами -->
 <section class="hero" data-hero aria-label="CHARISMATA — первый экран">
+  <header class="hdr" id="hdr">
+    <a class="hdr__logo" href="#top" aria-label="CHARISMATA — в начало страницы">CHARISMATA</a>
+    <nav class="hdr__nav" aria-label="Основная навигация">
+      <a href="#about">О программе</a>
+      <a href="#marina">Марина Нахалова</a>
+      <a href="#program">Семь дней</a>
+      <a href="#space">Место</a>
+      <a href="#join">Стоимость</a>
+    </nav>
+    <a class="btn btn--light btn--sm hdr__cta" href="apply.html">Подать заявку</a>
+    <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="menu"><i></i><i></i></button>
+  </header>
+
   <div class="film">
     <picture>
       <source media="(max-width: 700px)" srcset="assets/img/film-deck-m.webp">
@@ -107,19 +111,21 @@
 </section>
 
 <section class="sheet sheet--paper" id="for">
-  <div class="wrap fit">
-    <div class="fit__head">
+  <div class="wrap">
+    <div class="head head--wide">
       <h2>Кому подходит</h2>
       <p class="lead">Тем, кто чувствует, что способен на большее, и готов к глубокой работе с собой.</p>
-      <figure class="fit__photo"><img src="assets/img/est-grass-1000.webp" srcset="assets/img/est-grass-1000.webp 1000w, assets/img/est-grass.webp 2000w" sizes="38vw" width="2000" height="1470" alt="Практика на траве под высокими деревьями" loading="lazy" decoding="async"></figure>
     </div>
-    <ul class="fit__list">
-      <li>Вы многого достигли, но чувствуете, что ваши возможности шире уже реализованного.</li>
-      <li>Вы на пороге нового жизненного этапа и ищете внутреннюю ясность.</li>
-      <li>Вы хотите глубже понять себя, свои отношения и повторяющиеся жизненные сценарии.</li>
-      <li>Вы стремитесь к большей внутренней свободе и способности принимать собственные решения.</li>
-      <li>Вы хотите превратить жизненный опыт в ресурс для дальнейшего развития.</li>
-    </ul>
+    <div class="fit">
+      <figure class="fit__photo"><img src="assets/img/est-hall-1000.webp" srcset="assets/img/est-hall-1000.webp 1000w, assets/img/est-hall.webp 2000w" sizes="(max-width: 900px) 92vw, 38vw" width="2000" height="2000" alt="Светлый зал с каменными стенами и креслами по кругу" loading="lazy" decoding="async"></figure>
+      <ul class="fit__list">
+        <li>Вы многого достигли, но чувствуете, что ваши возможности шире уже реализованного.</li>
+        <li>Вы на пороге нового жизненного этапа и ищете внутреннюю ясность.</li>
+        <li>Вы хотите глубже понять себя, свои отношения и повторяющиеся жизненные сценарии.</li>
+        <li>Вы стремитесь к большей внутренней свободе и способности принимать собственные решения.</li>
+        <li>Вы хотите превратить жизненный опыт в ресурс для дальнейшего развития.</li>
+      </ul>
+    </div>
   </div>
 </section>
 
@@ -191,37 +197,26 @@
       </div>
     </div>
 
-    <div class="levels">
-      <!-- три уровня вложены друг в друга: личность — внутри семьи, семья — внутри рода -->
-      <div class="rings" aria-hidden="true">
-        <span class="ring ring--3"><i>Род</i></span>
-        <span class="ring ring--2"><i>Семья</i></span>
-        <span class="ring ring--1"><i>Личность</i></span>
-      </div>
-      <div>
-        <h3 class="levels__title">Три уровня</h3>
-        <ul class="levels__list">
-          <li><h4>Личность <small>Личная история</small></h4><p>Собственный опыт, детские переживания, внутренние конфликты и убеждения, которые формируют отношение к себе, людям и миру.</p></li>
-          <li><h4>Семья <small>Отношения с родителями</small></h4><p>Влияние матери и отца на чувство безопасности, уверенность и способность принимать решения. Не поиск виноватых, а понимание и принятие своей истории.</p></li>
-          <li><h4>Род <small>История поколений</small></h4><p>Семейные убеждения и модели поведения, которые передаются из поколения в поколение. Возможность сохранить ценное и пересмотреть то, что больше не служит.</p></li>
+    <div class="spec">
+      <div class="spec__row">
+        <h3 class="spec__title">Три уровня</h3>
+        <ul class="spec__cols spec__cols--3">
+          <li><svg viewBox="0 0 48 48" width="48" height="48" aria-hidden="true"><circle cx="24" cy="24" r="22" fill="none" stroke="#cfcabd" stroke-width="1.5"/><circle cx="24" cy="24" r="14" fill="none" stroke="#cfcabd" stroke-width="1.5"/><circle cx="24" cy="24" r="6" fill="#141412"/></svg><h4>Личность</h4><small>Личная история</small><p>Собственный опыт, детские переживания, внутренние конфликты и убеждения, которые формируют отношение к себе, людям и миру.</p></li>
+          <li><svg viewBox="0 0 48 48" width="48" height="48" aria-hidden="true"><circle cx="24" cy="24" r="22" fill="none" stroke="#cfcabd" stroke-width="1.5"/><circle cx="24" cy="24" r="14" fill="none" stroke="#141412" stroke-width="2.6"/><circle cx="24" cy="24" r="6" fill="#cfcabd"/></svg><h4>Семья</h4><small>Отношения с родителями</small><p>Влияние матери и отца на чувство безопасности, уверенность и способность принимать решения. Не поиск виноватых, а понимание и принятие своей истории.</p></li>
+          <li><svg viewBox="0 0 48 48" width="48" height="48" aria-hidden="true"><circle cx="24" cy="24" r="22" fill="none" stroke="#141412" stroke-width="2.6"/><circle cx="24" cy="24" r="14" fill="none" stroke="#cfcabd" stroke-width="1.5"/><circle cx="24" cy="24" r="6" fill="#cfcabd"/></svg><h4>Род</h4><small>История поколений</small><p>Семейные убеждения и модели поведения, которые передаются из поколения в поколение. Возможность сохранить ценное и пересмотреть то, что больше не служит.</p></li>
         </ul>
       </div>
+      <div class="spec__row">
+        <h3 class="spec__title">Четыре этапа</h3>
+        <ol class="spec__cols spec__cols--4">
+          <li><h4>Осознание</h4><p>Понять причины внутренних конфликтов, страхов, повторяющихся ситуаций и ощущения застоя.</p></li>
+          <li><h4>Проживание</h4><p>Бережно поработать с чувствами, которые долго оставались подавленными.</p></li>
+          <li><h4>Прощение и принятие</h4><p>Переосмыслить отношения с собой и близкими, поработать с обидами, виной и стыдом.</p></li>
+          <li><h4>Открытие нового</h4><p>Перейти к более осознанным решениям, внутренней свободе и опоре на себя.</p></li>
+        </ol>
+      </div>
     </div>
-
-    <div class="stages">
-      <h3>Четыре этапа</h3>
-      <ol class="stages__list">
-        <li><b>Осознание</b><span>Понять причины внутренних конфликтов, страхов, повторяющихся ситуаций и ощущения застоя.</span></li>
-        <li><b>Проживание</b><span>Бережно поработать с чувствами, которые долго оставались подавленными.</span></li>
-        <li><b>Прощение и принятие</b><span>Переосмыслить отношения с собой и близкими, поработать с обидами, виной и стыдом.</span></li>
-        <li><b>Открытие нового</b><span>Перейти к более осознанным решениям, внутренней свободе и опоре на себя.</span></li>
-      </ol>
-    </div>
-
-    <div class="head--wide aside">
-      <span></span>
-      <p class="lead">Бывают периоды, когда прежние ориентиры уже утратили значение, а новые ещё не сформировались. Такое состояние внутреннего перехода называют лиминальностью — CHARISMATA посвящена в том числе работе с ним.</p>
-    </div>
+    <p class="method__note">Бывают периоды, когда прежние ориентиры уже утратили значение, а новые ещё не сформировались. Такое состояние внутреннего перехода называют лиминальностью — CHARISMATA посвящена в том числе работе с ним.</p>
   </div>
 </section>
 
@@ -484,12 +479,13 @@
 
 </main>
 
-<footer class="sheet sheet--paper ftr">
+<footer class="sheet sheet--ink ftr">
+  <img class="ftr__bg" src="assets/img/est-fire-1000.webp" width="1000" height="967" alt="" loading="lazy" decoding="async">
   <div class="wrap">
     <div class="ftr__top">
       <div>
         <p class="ftr__tag">Искусство раскрывать свою истинную силу</p>
-        <a class="btn" href="apply.html">Подать заявку</a>
+        <a class="btn btn--light" href="apply.html">Подать заявку</a>
       </div>
       <nav class="ftr__nav" aria-label="Навигация в подвале">
         <a href="#about">О программе</a>

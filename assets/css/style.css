@@ -405,7 +405,8 @@ body:not(.has-hero) .hdr { position: relative; color: var(--ink); }
   .prices__photo { aspect-ratio: 16 / 10; }
   .price__sum { padding-top: 28px; }
   .btn--lg { width: 100%; }
-  .ftr__nav { gap: 10px 28px; }
+  .ftr__nav { display: flex; flex-wrap: wrap; gap: 10px 24px; }
+  .ftr__nav a { white-space: nowrap; }
   .choices { flex-direction: column; align-items: stretch; }
   .choice span { display: flex; }
   .form__nav .btn { flex: 1 1 100%; }

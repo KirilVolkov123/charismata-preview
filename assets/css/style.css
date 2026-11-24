@@ -230,11 +230,15 @@ h2 + .lead, h2 + p { margin-top: clamp(16px, 2vw, 26px); }
 
 /* Стоимость */
 .prices { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 4fr) minmax(0, 4fr); gap: 16px; }
-.prices__photo { min-height: clamp(260px, 30vw, 430px); border-radius: 32px; }
-.price { display: flex; flex-direction: column; padding: clamp(24px, 2.8vw, 40px); border-radius: 32px; background: #fff; transition: transform .35s var(--e); }
+.prices__photo { min-height: clamp(240px, 25vw, 360px); border-radius: 32px; }
+/* карточка цены: слева название и пояснение, справа схема комнаты, внизу цена */
+.price { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: auto 1fr auto auto; column-gap: 16px; padding: clamp(24px, 2.8vw, 40px); border-radius: 32px; background: #fff; transition: transform .35s var(--e); }
+.price__desc { grid-column: 1; margin-top: 8px; max-width: 15em; font-size: 1.0625rem; line-height: 1.4; color: var(--muted); }
+.price__icon { grid-column: 2; grid-row: 1 / span 2; align-self: start; width: clamp(64px, 6.4vw, 96px); height: auto; color: #b3ad9f; }
+.price__sum, .price__note { grid-column: 1 / -1; }
 .price:hover { transform: translateY(-6px); }
 .price__name { font-size: clamp(1.125rem, 1.5vw, 1.375rem); font-weight: 500; line-height: 1.25; color: var(--ink); }
-.price__sum { margin-top: auto; padding-top: clamp(36px, 7vw, 110px); font-size: clamp(3rem, 5.4vw, 5.2rem); font-weight: 500; letter-spacing: -.05em; line-height: .95; color: var(--ink); white-space: nowrap; }
+.price__sum { padding-top: clamp(28px, 3vw, 44px); font-size: clamp(3rem, 5.4vw, 5.2rem); font-weight: 500; letter-spacing: -.05em; line-height: .95; color: var(--ink); white-space: nowrap; }
 .price__note { margin-top: 10px; font-size: 1rem; line-height: 1.4; color: var(--muted); }
 .join__go { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 32px; margin-top: clamp(36px, 5vw, 64px); }
 .join__go p { flex: 1 1 18em; max-width: 32em; font-size: 1rem; line-height: 1.5; }

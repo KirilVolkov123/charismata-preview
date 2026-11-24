@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Анкета участника — CHARISMATA</title>
+<meta name="description" content="Анкета для участия в авторской психологической программе Марины Нахаловой CHARISMATA. Португалия, 18–24 апреля 2027 года.">
+<meta name="theme-color" content="#f7f5f0">
+<meta property="og:title" content="Анкета участника — CHARISMATA">
+<meta property="og:image" content="assets/img/og.jpg">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<script>document.documentElement.classList.add('js');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Forum&family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="page-apply">
+
+<header class="hdr">
+  <a class="hdr__logo" href="index.html" aria-label="CHARISMATA — на главную">CHARISMATA</a>
+  <a class="hdr__back" href="index.html">На главную</a>
+</header>
+
+<main class="wrap apply">
+  <figure class="apply__side">
+    <img src="assets/img/side-deck.webp" width="720" height="1162" alt="Утренняя практика на террасе усадьбы">
+    <figcaption>18–24 апреля 2027 года, Португалия. Группа до 25 человек.</figcaption>
+  </figure>
+  <div class="apply__main">
+    <h1>Анкета участника</h1>
+    <p class="lead">Девять коротких вопросов, около пяти минут.</p>
+    <p>Анкету читает Марина. Ответы видят только она и организаторы программы.</p>
+    <div class="formbox">
+      <form class="form" id="apply-form" action="send.php" method="post" novalidate>
+        <div class="form__top">
+          <p class="form__count">Вопрос <b data-step-now>1</b> из <span data-step-total>9</span></p>
+          <div class="form__bar" aria-hidden="true"><i></i></div>
+        </div>
+
+        <fieldset class="form__step is-active">
+          <legend class="form__q">Как вас зовут?</legend>
+          <div class="field">
+            <label for="f-name">Имя и фамилия</label>
+            <input id="f-name" name="name" type="text" autocomplete="name" maxlength="120" required>
+            <p class="field__err" aria-live="polite"></p>
+          </div>
+        </fieldset>
+
+        <fieldset class="form__step">
+          <legend class="form__q">Как с вами связаться?</legend>
+          <div class="field">
+            <label for="f-email">Электронная почта</label>
+            <input id="f-email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="160" required>
+            <p class="field__err" aria-live="polite"></p>
+          </div>
+          <div class="field">
+            <label for="f-phone">Телефон, WhatsApp или Telegram</label>
+            <input id="f-phone" name="phone" type="text" autocomplete="tel" maxlength="80" required>
+            <p class="field__err" aria-live="polite"></p>
+          </div>
+        </fieldset>
+
+        <fieldset class="form__step">
+          <legend class="form__q">Где вы живёте?</legend>
+          <div class="field">
+            <label for="f-city">Город и страна</label>
+            <input id="f-city" name="city" type="text" maxlength="120">
+            <p class="field__hint">Можно пропустить.</p>
+          </div>
+        </fieldset>
+
+        <fieldset class="form__step">
+          <legend class="form__q">Расскажите немного о себе</legend>
+          <div class="field">
+            <label for="f-about">Чем вы занимаетесь и что для вас сейчас важно</label>
+            <textarea id="f-about" name="about" rows="4" maxlength="3000"></textarea>
+            <p class="field__hint">Можно коротко, в двух-трёх предложениях.</p>
+          </div>
+        </fieldset>
+
+        <fieldset class="form__step">
+          <legend class="form__q">На каком жизненном этапе вы сейчас находитесь?</legend>
+          <div class="field">
+            <label for="f-stage">Что происходит в вашей жизни</label>
+            <textarea id="f-stage" name="stage" rows="4" maxlength="3000"></textarea>
+            <p class="field__hint">Можно пропустить.</p>
+          </div>
+        </fieldset>
+
+        <fieldset class="form__step">
+          <legend class="form__q">Что привело вас к CHARISMATA?</legend>
+          <div class="field">
+            <label for="f-why">И чего вы ждёте от программы</label>
+            <textarea id="f-why" name="motivation" rows="5" maxlength="4000" required></textarea>
+            <p class="field__err" aria-live="polite"></p>
+          </div>
+        </fieldset>
+
+        <fieldset class="form__step">
+          <legend class="form__q">Размещение и питание</legend>
+          <div class="field">
+            <span class="field__label" id="l-acc">Какое размещение вам ближе</span>
+            <div class="choices" role="radiogroup" aria-labelledby="l-acc">
+              <label class="choice"><input type="radio" name="accommodation" value="Одноместное — 3 500 €"><span>Одноместное, 3 500 €</span></label>
+              <label class="choice"><input type="radio" name="accommodation" value="Двухместное — 3 000 €"><span>Двухместное, 3 000 €</span></label>
+              <label class="choice"><input type="radio" name="accommodation" value="Решу позже"><span>Решу позже</span></label>
+            </div>
+          </div>
+          <div class="field">
+            <span class="field__label" id="l-diet">Питание</span>
+            <div class="choices" role="radiogroup" aria-labelledby="l-diet">
+              <label class="choice"><input type="radio" name="diet" value="Вегетарианское"><span>Вегетарианское</span></label>
+              <label class="choice"><input type="radio" name="diet" value="С рыбой или белым мясом"><span>С рыбой или белым мясом</span></label>
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-allergy">Аллергии и пищевые ограничения, если есть</label>
+            <input id="f-allergy" name="allergies" type="text" maxlength="400">
+          </div>
+        </fieldset>
+
+        <fieldset class="form__step">
+          <legend class="form__q">Откуда вы узнали о CHARISMATA?</legend>
+          <div class="field">
+            <span class="field__label" id="l-src">Выберите самое близкое</span>
+            <div class="choices choices--col" role="radiogroup" aria-labelledby="l-src">
+              <label class="choice"><input type="radio" name="source" value="Рекомендация участника или знакомых"><span>Рекомендация участника или знакомых</span></label>
+              <label class="choice"><input type="radio" name="source" value="Интервью и подкасты Марины"><span>Интервью и подкасты Марины</span></label>
+              <label class="choice"><input type="radio" name="source" value="Программы «Истинная Я» или «Путь к себе»"><span>Программы «Истинная Я» или «Путь к себе»</span></label>
+              <label class="choice"><input type="radio" name="source" value="Социальные сети"><span>Социальные сети</span></label>
+              <label class="choice"><input type="radio" name="source" value="Другое"><span>Другое</span></label>
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-rec">Кто вас рекомендовал, если есть рекомендация</label>
+            <input id="f-rec" name="recommender" type="text" maxlength="160">
+          </div>
+        </fieldset>
+
+        <fieldset class="form__step">
+          <legend class="form__q">Осталось отправить</legend>
+          <p class="form__text">Анкету прочитает Марина. После этого мы напишем вам и договоримся об онлайн-встрече. Отправка анкеты не гарантирует участие: решение принимается после знакомства и оно взаимное.</p>
+          <div class="field field--check">
+            <label class="check">
+              <input type="checkbox" name="consent" value="yes" required>
+              <span>Я согласен(на) на обработку персональных данных в соответствии с <a href="privacy.html" target="_blank" rel="noopener">политикой конфиденциальности</a></span>
+            </label>
+            <p class="field__err" aria-live="polite"></p>
+          </div>
+        </fieldset>
+
+        <div class="hp" aria-hidden="true">
+          <label>Не заполняйте это поле <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+        </div>
+        <input type="hidden" name="page" value="apply">
+        <input type="hidden" name="utm_source"><input type="hidden" name="utm_medium"><input type="hidden" name="utm_campaign"><input type="hidden" name="utm_content"><input type="hidden" name="utm_term"><input type="hidden" name="referrer"><input type="hidden" name="started_at">
+
+        <p class="form__error" role="alert" hidden></p>
+
+        <div class="form__nav">
+          <button class="btn" type="button" data-next hidden>Дальше</button>
+          <button class="btn" type="submit" data-submit>Отправить анкету</button>
+          <button class="form__back" type="button" data-prev hidden>Назад</button>
+          <span class="form__hint" data-enter-hint hidden>или нажмите Enter</span>
+        </div>
+      </form>
+
+      <div class="form-done" id="apply-done" tabindex="-1" hidden>
+        <h3 class="form-done__title">Спасибо<span data-done-name></span>. Анкета у Марины.</h3>
+        <p>Она лично читает каждую заявку. Мы напишем вам, чтобы договориться об онлайн-встрече.</p>
+        <p class="form-done__note">Отправка анкеты не гарантирует участие: решение принимается после знакомства и оно взаимное.</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="wrap pagefoot">CHARISMATA. 18–24 апреля 2027 года, Португалия. <a href="index.html">На главную</a> <a href="privacy.html">Политика конфиденциальности</a></footer>
+
+<script src="assets/js/main.js" defer></script>
+</body>
+</html>

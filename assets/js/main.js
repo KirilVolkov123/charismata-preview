@@ -99,13 +99,21 @@
       img.removeAttribute('data-src');
     };
     const restartBar = m => { m.classList.remove('is-on'); void m.offsetWidth; m.classList.add('is-on'); };
+    // Смена кадра идёт по таймеру (полоски на ПК скрыты, поэтому на их анимацию не опираемся)
+    const HOLD = 6500;
+    let timer = 0;
+    const schedule = () => {
+      clearTimeout(timer);
+      if (!reduce && !doc.hidden) timer = setTimeout(() => go(cur + 1), HOLD);
+    };
     const go = (i, user) => {
       i = (i + slides.length) % slides.length;
-      if (i === cur) return;
+      if (i === cur) { schedule(); return; }
       const next = slides[i];
       if (!isReady(next)) {                       // кадр ещё не загрузился — остаёмся на текущем
         if (user) { loadSlide(next); next.addEventListener('load', () => go(i), { once: true }); }
         restartBar(marks[cur]);
+        schedule();
         return;
       }
       const old = slides[cur];
@@ -114,16 +122,43 @@
       next.classList.remove('is-out'); next.classList.add('is-on');
       marks.forEach((m, k) => { m.classList.toggle('is-on', k === i); m.classList.toggle('is-done', k < i); });
       cur = i;
+      schedule();
     };
-    marks.forEach((m, i) => {
-      m.addEventListener('click', () => go(i, true));
-      m.firstElementChild.addEventListener('animationend', () => go(cur + 1));
+    marks.forEach((m, i) => m.addEventListener('click', () => go(i, true)));
+    // вкладка ушла в фон — останавливаемся, вернулась — продолжаем с начала полоски
+    doc.addEventListener('visibilitychange', () => {
+      if (doc.hidden) clearTimeout(timer); else { restartBar(marks[cur]); schedule(); }
     });
+    schedule();
     if (!saveData) {
       const loadRest = () => setTimeout(() => slides.forEach(loadSlide), 500);
       if (doc.readyState === 'complete') loadRest(); else addEventListener('load', loadRest);
     }
   }
+
+  /* ───────── Переключатель «уровни / этапы» ───────── */
+  $$('[data-tabs]').forEach(root => {
+    const tabs = $$('[role="tab"]', root);
+    const panels = tabs.map(t => doc.getElementById(t.getAttribute('aria-controls')));
+    const select = (i, focus) => {
+      tabs.forEach((t, k) => {
+        const on = k === i;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+        if (panels[k]) panels[k].hidden = !on;
+      });
+      if (focus) tabs[i].focus();
+    };
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => select(i));
+      t.addEventListener('keydown', e => {
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        e.preventDefault();
+        select((i + (e.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length, true);
+      });
+    });
+    select(0);
+  });
 
   /* ───────── Лента дней ───────── */
   const reel = $('.reel');

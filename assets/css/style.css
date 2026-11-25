@@ -243,6 +243,7 @@ h2 + .lead, h2 + p { margin-top: clamp(16px, 2vw, 26px); }
 .steps h3 { padding-top: 7px; font-size: clamp(1.25rem, 1.7vw, 1.55rem); letter-spacing: -.02em; line-height: 1.2; }
 .steps small { display: block; margin-top: 4px; font-size: .9375rem; color: var(--muted); }
 .steps p { margin-top: 8px; max-width: 30em; font-size: 1.0625rem; line-height: 1.5; }
+.steps p + p { margin-top: 10px; color: var(--muted); }
 .method__note { max-width: 34em; margin-top: clamp(28px, 4vw, 48px); font-size: 1.0625rem; color: var(--muted); }
 .flow { --g: clamp(18px, 2.6vw, 40px); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--g); counter-reset: s; }
 .flow li { position: relative; counter-increment: s; }
@@ -257,12 +258,9 @@ h2 + .lead, h2 + p { margin-top: clamp(16px, 2vw, 26px); }
 .days__nav button { display: grid; place-items: center; width: 56px; height: 56px; border: 0; border-radius: 50%; background: var(--ink); color: #fff; transition: transform .2s var(--e), opacity .2s; }
 .days__nav button:hover { transform: scale(1.08); }
 .days__nav button[disabled] { opacity: .26; pointer-events: none; }
-.reel { --side: max(var(--pad), calc((100vw - 1360px) / 2)); display: flex; gap: 16px; margin-top: clamp(28px, 4vw, 56px); padding-inline: var(--side); overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--side); scrollbar-width: none; }
+.reel { --side: max(var(--pad), calc((100vw - 1360px) / 2)); display: flex; gap: 16px; margin-top: clamp(28px, 4vw, 56px); padding-inline: var(--side); overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; scroll-padding-inline: var(--side); scrollbar-width: none; }
 .reel::-webkit-scrollbar { display: none; }
-/* на компьютере лента листается только стрелками: колесо и тачпад прокручивают страницу, а не карточки */
-@media (hover: hover) and (pointer: fine) {
-  .reel { overflow-x: hidden; scroll-snap-type: none; }
-}
+/* лента двигается только вбок: по вертикали карточки неподвижны, колесо и тачпад вниз прокручивают страницу */
 /* на сенсорных экранах ленту листают пальцем — стрелки не нужны */
 @media (hover: none), (pointer: coarse) {
   .days__nav { display: none; }
@@ -458,6 +456,8 @@ h2 + .lead, h2 + p { margin-top: clamp(16px, 2vw, 26px); }
 @media (prefers-reduced-motion: no-preference) {
   .rv-on [data-rv] { opacity: 0; transform: translate3d(0, 16px, 0); transition: opacity .7s ease var(--rv-d, 0s), transform .8s var(--e) var(--rv-d, 0s); }
   .rv-on [data-rv].is-in { opacity: 1; transform: none; }
+  /* карточки дней только проявляются: сдвиг вниз растягивал ленту по высоте, и она прокручивалась по вертикали */
+  .rv-on .day[data-rv] { transform: none; }
 }
 
 /* ───────── Адаптив ───────── */

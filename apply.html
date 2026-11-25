@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Анкета участника — CHARISMATA</title>
 <meta name="description" content="Анкета для участия в авторской психологической программе Марины Нахаловой CHARISMATA. Португалия, 18–24 апреля 2027 года.">
-<meta name="theme-color" content="#f7f5f0">
+<meta name="theme-color" content="#0d0f10">
 <meta property="og:title" content="Анкета участника — CHARISMATA">
 <meta property="og:image" content="assets/img/og.jpg">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
@@ -14,25 +14,26 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Forum&family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=914381501">
+<link rel="stylesheet" href="assets/css/style.css?v=1175258688">
 </head>
 <body class="page-apply">
+<!-- та же вечерняя сцена, что в финале главной страницы -->
+<div class="finale finale--page">
+  <img class="finale__bg" src="assets/img/est-fire-1000.webp" srcset="assets/img/est-fire-1000.webp 1000w, assets/img/est-fire.webp 2000w" sizes="(max-width: 900px) 240vw, 100vw" width="2000" height="1934" alt="" fetchpriority="high">
 
-<header class="hdr">
-  <a class="hdr__logo" href="index.html" aria-label="CHARISMATA — на главную">CHARISMATA</a>
-  <a class="hdr__back" href="index.html">На главную</a>
-</header>
+  <header class="hdr">
+    <a class="hdr__logo" href="index.html" aria-label="CHARISMATA — на главную">CHARISMATA</a>
+    <a class="hdr__back" href="index.html">На главную</a>
+  </header>
 
-<main class="wrap apply">
-  <figure class="apply__side">
-    <img src="assets/img/side-deck.webp" width="720" height="1162" alt="Утренняя практика на террасе усадьбы">
-    <figcaption>18–24 апреля 2027 года, Португалия. Группа до 25 человек.</figcaption>
-  </figure>
-  <div class="apply__main">
-    <h1>Анкета участника</h1>
-    <p class="lead">Девять коротких вопросов, около пяти минут.</p>
-    <p>Анкету читает Марина. Ответы видят только она и организаторы программы.</p>
-    <div class="formbox">
+  <main class="wrap split">
+    <div class="split__head">
+      <h1>Анкета участника</h1>
+      <p class="lead">Девять коротких вопросов, около пяти минут.</p>
+      <p class="reader"><img src="assets/img/marina-face.webp" width="88" height="88" alt=""><span>Анкету читает Марина. Ответы видят только она и организаторы программы.</span></p>
+      <p class="apply__facts">18–24 апреля 2027 года, Португалия. Группа до 25 человек.</p>
+    </div>
+    <div class="formbox formbox--glass">
       <form class="form" id="apply-form" action="send.php" method="post" novalidate>
         <div class="form__top">
           <p class="form__count">Вопрос <b data-step-now>1</b> из <span data-step-total>9</span></p>
@@ -173,11 +174,24 @@
         <p class="form-done__note">Отправка анкеты не гарантирует участие: решение принимается после знакомства и оно взаимное.</p>
       </div>
     </div>
-  </div>
-</main>
+  </main>
 
-<footer class="wrap pagefoot">CHARISMATA. 18–24 апреля 2027 года, Португалия. <a href="index.html">На главную</a> <a href="privacy.html">Политика конфиденциальности</a></footer>
+  <footer class="wrap ftr">
+    <div class="ftr__panel glass">
+      <div class="ftr__row">
+        <a class="ftr__logo" href="index.html" aria-label="CHARISMATA — на главную">CHARISMATA</a>
+        <nav class="ftr__nav" aria-label="Навигация в подвале">
+          <a href="index.html">На главную</a>
+          <a href="privacy.html">Политика конфиденциальности</a>
+        </nav>
+      </div>
+      <div class="ftr__base">
+        <p>Авторская психологическая программа Марины Нахаловой. 18–24 апреля 2027 года, Португалия.</p>
+      </div>
+    </div>
+  </footer>
+</div>
 
-<script src="assets/js/main.js?v=1564096122" defer></script>
+<script src="assets/js/main.js?v=4250082883" defer></script>
 </body>
 </html>

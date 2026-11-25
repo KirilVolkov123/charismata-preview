@@ -40,6 +40,28 @@
     });
   })(doc.body);
 
+  /* ───────── Появление блоков при прокрутке ─────────
+     Скрипт сам размечает блоки и ставит класс rv-on; если он не загрузился, ничего не прячется. */
+  (() => {
+    if (reduce || !('IntersectionObserver' in window)) return;
+    const BLOCKS = '.sheet h2, .sheet .lead, .head__sub, .about p:not(.lead), .facts > div, .marina__text > p:not(.lead), .stats > div, .listen__stage, .playlist li, .more, .tabs, .method__note, .day, .extras__head, .extras__list, .food, .circle p:not(.lead), .rules > div, .whom__list li, .sub, .offer__head > p:not(.lead), .offer__panel, .flow li, .join__note, .split__head > p:not(.lead), .formbox, .ftr__panel';
+    $$(BLOCKS).forEach(el => { if (!el.closest('[data-rv]')) el.setAttribute('data-rv', ''); });
+    // соседние блоки появляются по очереди
+    $$('[data-rv]').forEach(el => {
+      const i = Array.from(el.parentNode.children).filter(c => c.hasAttribute('data-rv')).indexOf(el);
+      if (i > 0) el.style.setProperty('--rv-d', (Math.min(i, 5) * 0.08).toFixed(2) + 's');
+    });
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('is-in');
+        io.unobserve(e.target);
+      });
+    }, { threshold: 0.05 });   // без отступа снизу: иначе последняя строка подвала никогда не «войдёт» в экран
+    html.classList.add('rv-on');
+    $$('[data-rv]').forEach(el => io.observe(el));
+  })();
+
   /* ───────── Прокрутка: один обработчик на кадр ───────── */
   const scrollFns = [];
   let ticking = false;
@@ -86,6 +108,12 @@
     addEventListener('resize', fit);
     addEventListener('load', fit);
 
+    // Заставка-шторка длится меньше секунды; после неё класс больше не нужен
+    if (html.classList.contains('is-intro')) setTimeout(() => html.classList.remove('is-intro'), 2400);
+
+    // Номер и название текущего кадра рядом со слоганом
+    const frameNow = $('[data-frame-now]', hero), frameCap = $('[data-frame-cap]', hero);
+
     // Фильм: кадр сменяется, когда заполнилась его полоска. Кадры после первого
     // подгружаются уже после загрузки страницы, на телефоне — облегчённые вертикальные.
     const slides = $$('.film img', hero), marks = $$('.reelnav button', hero);
@@ -121,6 +149,8 @@
       setTimeout(() => { if (!old.classList.contains('is-on')) old.classList.remove('is-out'); }, 1500);
       next.classList.remove('is-out'); next.classList.add('is-on');
       marks.forEach((m, k) => { m.classList.toggle('is-on', k === i); m.classList.toggle('is-done', k < i); });
+      if (frameNow) frameNow.textContent = String(i + 1).padStart(2, '0');
+      if (frameCap) frameCap.textContent = marks[i].textContent.trim();
       cur = i;
       schedule();
     };
@@ -163,28 +193,83 @@
   /* ───────── Лента дней ───────── */
   const reel = $('.reel');
   if (reel) {
-    $$('.days__nav button').forEach(b => {
-      b.addEventListener('click', () => reel.scrollBy({ left: +b.dataset.dir * reel.clientWidth * 0.7, behavior: reduce ? 'auto' : 'smooth' }));
+    const days = $$('.day', reel), btns = $$('.days__nav button'), thumb = $('.days__bar i');
+    // стрелки листают по одной карточке
+    const step = () => (days.length > 1 ? days[1].offsetLeft - days[0].offsetLeft : reel.clientWidth);
+    const move = dir => reel.scrollBy({ left: dir * step(), behavior: reduce ? 'auto' : 'smooth' });
+    btns.forEach(b => b.addEventListener('click', () => move(+b.dataset.dir)));
+    // на компьютере лента не прокручивается колесом и тачпадом (см. стили), поэтому с клавиатуры — стрелки
+    reel.addEventListener('keydown', e => {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      e.preventDefault();
+      move(e.key === 'ArrowRight' ? 1 : -1);
     });
+    // линия под лентой показывает, какая часть недели сейчас на экране
+    let queued = false;
+    const sync = () => {
+      queued = false;
+      const max = reel.scrollWidth - reel.clientWidth;
+      const part = max > 0 ? reel.clientWidth / reel.scrollWidth : 1;
+      const pos = max > 0 ? Math.min(1, Math.max(0, reel.scrollLeft / max)) : 0;
+      if (thumb) {
+        thumb.style.width = (part * 100).toFixed(2) + '%';
+        thumb.style.transform = `translateX(${(pos * (1 - part) / part * 100).toFixed(2)}%)`;
+      }
+      btns.forEach(b => { b.disabled = +b.dataset.dir < 0 ? pos <= 0.005 : pos >= 0.995; });
+    };
+    reel.addEventListener('scroll', () => { if (!queued) { queued = true; requestAnimationFrame(sync); } }, { passive: true });
+    window.addEventListener('resize', sync);
+    sync();
   }
 
-  /* ───────── Видео: обложка → плеер на месте ───────── */
-  $$('[data-yt]').forEach(a => {
-    a.addEventListener('click', e => {
-      e.preventDefault();
-      const id = a.dataset.yt;
+  /* ───────── Видео: большой кадр и список выпусков ─────────
+     Обложка в кадре и строка списка включают плеер в этом же кадре. Без скрипта это обычные ссылки на YouTube. */
+  $$('[data-listen]').forEach(root => {
+    const stage = $('.listen__stage', root), picks = $$('[data-pick]', root);
+    if (!stage) return;
+    const play = (id, title) => {
       const box = doc.createElement('div');
       box.className = 'video__frame';
       const f = doc.createElement('iframe');
-      f.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}?autoplay=1&rel=0&playsinline=1`;
-      f.title = (a.getAttribute('aria-label') || 'Видео').replace(/^Смотреть видео:\s*/, '');
+      // обычный адрес YouTube, а не youtube-nocookie: так плеер видит, что зритель уже вошёл в YouTube
+      // в этом браузере, и реже просит «подтвердить, что вы не бот»
+      f.src = `https://www.youtube.com/embed/${encodeURIComponent(id)}?autoplay=1&rel=0&playsinline=1`;
+      f.title = title || 'Видео';
       f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
       f.referrerPolicy = 'strict-origin-when-cross-origin';
       f.allowFullscreen = true;
       box.appendChild(f);
-      a.replaceWith(box);
+      // запасной путь, если плеер всё же не запустился (решает YouTube, со страницы этого не видно)
+      const alt = doc.createElement('p');
+      alt.className = 'listen__alt';
+      const link = doc.createElement('a');
+      link.href = `https://www.youtube.com/watch?v=${encodeURIComponent(id)}`;
+      link.target = '_blank';
+      link.rel = 'noopener';
+      link.textContent = 'Открыть на YouTube';
+      alt.append('Видео не запускается? ', link);
+      stage.replaceChildren(box, alt);
+      picks.forEach(p => {
+        const on = p.dataset.pick === id;
+        p.classList.toggle('is-on', on);
+        if (on) p.setAttribute('aria-current', 'true'); else p.removeAttribute('aria-current');
+      });
       track('video_play', { video: id });
+    };
+    stage.addEventListener('click', e => {
+      const a = e.target.closest('[data-yt]');
+      if (!a) return;
+      e.preventDefault();
+      play(a.dataset.yt, (a.getAttribute('aria-label') || '').replace(/^Смотреть видео:\s*/, ''));
     });
+    picks.forEach(p => p.addEventListener('click', e => {
+      e.preventDefault();
+      const b = $('b', p);
+      play(p.dataset.pick, b ? b.textContent : '');
+      // на телефоне кадр стоит над списком — возвращаем его в поле зрения
+      const r = stage.getBoundingClientRect();
+      if (r.top < 0 || r.bottom > window.innerHeight) stage.scrollIntoView({ block: 'center', behavior: reduce ? 'auto' : 'smooth' });
+    }));
   });
 
   /* ───────── Плавающая кнопка заявки: после первого экрана и до анкеты ───────── */

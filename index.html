@@ -13,13 +13,24 @@
 <meta property="og:description" content="Авторская психологическая программа Марины Нахаловой. Португалия, 18–24 апреля 2027 года. Группа до 25 участников, индивидуальный отбор.">
 <meta property="og:image" content="assets/img/og.jpg">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-<script>document.documentElement.classList.add('js');</script>
+<script>
+  (function (d) {
+    d.classList.add('js');
+    // заставка первого экрана — один раз за посещение и только если не отключена анимация
+    try {
+      if (!sessionStorage.getItem('charismata-intro') && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        d.classList.add('is-intro');
+        sessionStorage.setItem('charismata-intro', '1');
+      }
+    } catch (e) {}
+  })(document.documentElement);
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="image" href="assets/img/est-deck.webp" media="(min-width: 701px)">
-<link rel="preload" as="image" href="assets/img/film-deck-m.webp" media="(max-width: 700px)">
+<link rel="preload" as="image" href="assets/img/est-lane.webp" media="(min-width: 701px)">
+<link rel="preload" as="image" href="assets/img/film-lane-m.webp" media="(max-width: 700px)">
 <link href="https://fonts.googleapis.com/css2?family=Forum&family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=914381501">
+<link rel="stylesheet" href="assets/css/style.css?v=1175258688">
 </head>
 <body class="has-hero">
 
@@ -61,30 +72,42 @@
 
   <div class="film">
     <picture>
-      <source media="(max-width: 700px)" srcset="assets/img/film-deck-m.webp">
-      <img class="is-on" src="assets/img/est-deck.webp" width="2000" height="1326" style="object-position:60% 62%" alt="Утренняя практика на террасе усадьбы" fetchpriority="high">
+      <source media="(max-width: 700px)" srcset="assets/img/film-lane-m.webp">
+      <img class="is-on" src="assets/img/est-lane.webp" width="2000" height="1338" style="object-position:56% 55%" alt="Аллея усадьбы: старая сосна и лаванда" fetchpriority="high">
     </picture>
     <!-- остальные кадры подгружаются после загрузки страницы -->
-    <img data-src="assets/img/est-lane.webp" data-src-m="assets/img/film-lane-m.webp" width="2000" height="1338" style="object-position:56% 55%" alt="Аллея усадьбы: старая сосна и лаванда">
+    <img data-src="assets/img/est-deck.webp" data-src-m="assets/img/film-deck-m.webp" width="2000" height="1326" style="object-position:60% 62%" alt="Утренняя практика на террасе усадьбы">
     <img data-src="assets/img/est-facade.webp" data-src-m="assets/img/film-house-m.webp" width="2000" height="1124" style="object-position:60% 50%" alt="Главный дом усадьбы под синим небом">
     <img data-src="assets/img/est-fire.webp" data-src-m="assets/img/film-fire-m.webp" width="2000" height="1934" style="object-position:50% 70%" alt="Вечер у огня во дворе усадьбы">
   </div>
 
+  <!-- заставка: тёмная шторка, которая быстро уходит вверх -->
+  <div class="intro" aria-hidden="true"></div>
+
   <div class="hero__body">
     <p class="hero__eyebrow">Авторская психологическая программа Марины Нахаловой</p>
     <h1 class="hero__title"><span class="hero__word">CHARISMATA</span></h1>
-    <p class="hero__tag">Искусство раскрывать свою истинную силу</p>
-    <p class="hero__lead">Семь дней в уединённой усадьбе. Пять из них — глубокая психологическая работа в небольшой группе.</p>
-    <div class="hero__go">
-      <a class="btn btn--light" href="apply.html">Подать заявку</a>
-      <span>18–24 апреля 2027 года, <br>Португалия</span>
+    <div class="hero__row">
+      <p class="hero__tag">Искусство раскрывать свою истинную силу</p>
+      <!-- номер и название текущего кадра фильма -->
+      <p class="hero__frame" aria-hidden="true"><b data-frame-now>01</b><i>/ 04</i><span data-frame-cap>Тишина и природа</span></p>
+    </div>
+    <!-- панель: главное о программе и кнопка -->
+    <div class="hero__panel">
+      <dl class="hero__facts">
+        <div><dt>Когда</dt><dd>18–24 апреля 2027</dd></div>
+        <div><dt>Где</dt><dd>Португалия, усадьба</dd></div>
+        <div><dt>Группа</dt><dd>до 25 человек</dd></div>
+        <div><dt>Стоимость</dt><dd>3 000–3 500 €</dd></div>
+      </dl>
+      <a class="btn btn--light hero__cta" href="apply.html">Подать заявку<i aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></i></a>
     </div>
   </div>
 
-  <!-- полоски кадров: на ПК с подписями, на телефоне — только полоски -->
+  <!-- полоски кадров: показывают, какой кадр идёт, и переключают его -->
   <div class="reelnav" role="group" aria-label="Кадры первого экрана">
-    <button type="button" class="is-on"><i></i>Утренние практики</button>
-    <button type="button"><i></i>Тишина и природа</button>
+    <button type="button" class="is-on"><i></i>Тишина и природа</button>
+    <button type="button"><i></i>Утренние практики</button>
     <button type="button"><i></i>Усадьба в Португалии</button>
     <button type="button"><i></i>Вечера у огня</button>
   </div>
@@ -94,27 +117,24 @@
   <div class="wrap about">
     <div>
       <h2>Семь дней в усадьбе, пять из них — глубокая работа с Мариной Нахаловой</h2>
-      <p>CHARISMATA — авторская программа о раскрытии внутренних даров, силы и потенциала. Профессиональная психология соединяется здесь с системной расстановочной работой, телесными практиками и силой природы.</p>
-      <p>Это не wellness-ретрит, не мотивационный тренинг и не туристическая поездка. Пространство, питание и практики дополняют главное — работу с Мариной.</p>
+      <p class="lead">Авторская программа о раскрытии внутренних даров, силы и потенциала.</p>
+      <p>Психология, системные расстановки, телесные практики и природа. <strong>Это не wellness-ретрит и не мотивационный тренинг</strong> — главное здесь работа с Мариной.</p>
     </div>
-    <dl class="facts">
-      <div><dt>Когда</dt><dd>18–24 апреля 2027 года</dd></div>
-      <div><dt>Где</dt><dd>Уединённая усадьба в Португалии</dd></div>
-      <div><dt>Группа</dt><dd>До 25 участников, индивидуальный отбор</dd></div>
-      <div><dt>Стоимость</dt><dd>3 000–3 500 € за программу</dd></div>
-    </dl>
+    <div class="about__photos">
+      <img src="assets/img/about-house.webp" width="720" height="1028" alt="Главный дом усадьбы под синим небом" loading="lazy" decoding="async">
+      <img src="assets/img/about-lane.webp" width="720" height="1162" alt="Аллея усадьбы со старой сосной" loading="lazy" decoding="async">
+    </div>
   </div>
 </section>
 
-<!-- Фон раздела взят со стены на портрете, поэтому снимок растворяется в странице -->
-<section class="sheet sheet--warm" id="marina">
+<!-- Тёмный раздел: фон совпадает с фоном портрета, снимок растворяется в странице -->
+<section class="sheet sheet--ink" id="marina">
   <div class="wrap marina">
-    <figure><img src="assets/img/marina-dress.webp" srcset="assets/img/marina-dress-1000.webp 1000w, assets/img/marina-dress.webp 1400w" sizes="(max-width: 900px) 92vw, 42vw" width="1400" height="1962" alt="Марина Нахалова" loading="lazy" decoding="async"></figure>
+    <figure><img src="assets/img/marina-stool.webp" srcset="assets/img/marina-stool-1000.webp 1000w, assets/img/marina-stool.webp 1364w" sizes="(max-width: 900px) 92vw, 42vw" width="1364" height="2046" alt="Марина Нахалова" loading="lazy" decoding="async"></figure>
     <div class="marina__text">
       <h2>Марина Нахалова</h2>
       <p class="lead">Психолог, психоаналитический и системный терапевт, специалист по расстановочной работе.</p>
-      <p>Почти два десятилетия она исследует, как формируется личность, какие невидимые механизмы управляют нашими решениями и что помогает человеку обрести доступ к собственной силе.</p>
-      <p>Главное в её работе — помочь человеку обнаружить и раскрыть его собственный дар.</p>
+      <p>Помогает человеку обнаружить и раскрыть его собственный дар.</p>
       <!-- Показатели — из документа «Полное описание Final»; перед публикацией подтвердить у Марины -->
       <dl class="stats">
         <div><dd>19 лет</dd><dt>практики</dt></div>
@@ -130,68 +150,58 @@
     <div class="head">
       <h2>Послушать Марину</h2>
     </div>
-    <div class="videos">
-      <article class="video">
-        <a class="video__thumb" href="https://www.youtube.com/watch?v=wDX1wui1-X4" data-yt="wDX1wui1-X4" target="_blank" rel="noopener" aria-label="Смотреть видео: Выводы за 18 лет практики семейного психолога">
+    <!-- большой кадр и список выпусков: выбранный выпуск включается в кадре -->
+    <div class="listen" data-listen>
+      <div class="listen__stage">
+        <a class="video__thumb" href="https://www.youtube.com/watch?v=wDX1wui1-X4" data-yt="wDX1wui1-X4" target="_blank" rel="noopener" aria-label="Смотреть видео: Выводы за 18 лет практики семейного психолога: как сохранить страсть и любовь">
           <img src="https://i.ytimg.com/vi/wDX1wui1-X4/maxresdefault.jpg" width="1280" height="720" alt="" loading="lazy" decoding="async"><span class="video__play" aria-hidden="true"></span>
         </a>
-        <h3>Выводы за 18 лет практики семейного психолога: как сохранить страсть и любовь</h3>
-        <p>Подкаст Алексея Голубева</p>
-      </article>
-      <article class="video">
-        <a class="video__thumb" href="https://www.youtube.com/watch?v=67OfUn18Ot0" data-yt="67OfUn18Ot0" target="_blank" rel="noopener" aria-label="Смотреть видео: Негативные мысли, тревожность, панические атаки">
-          <img src="https://i.ytimg.com/vi/67OfUn18Ot0/maxresdefault.jpg" width="1280" height="720" alt="" loading="lazy" decoding="async"><span class="video__play" aria-hidden="true"></span>
-        </a>
-        <h3>Негативные мысли, тревожность, панические атаки: как справиться?</h3>
-        <p>Орхан Мустафаев</p>
-      </article>
-      <article class="video">
-        <a class="video__thumb" href="https://www.youtube.com/watch?v=49fYBHJXmh8" data-yt="49fYBHJXmh8" target="_blank" rel="noopener" aria-label="Смотреть видео: Одна привычка, которая на самом деле изменит жизнь">
-          <img src="https://i.ytimg.com/vi/49fYBHJXmh8/maxresdefault.jpg" width="1280" height="720" alt="" loading="lazy" decoding="async"><span class="video__play" aria-hidden="true"></span>
-        </a>
-        <h3>Одна привычка, которая на самом деле изменит жизнь</h3>
-        <p>«Новый Мир» с Ниной Серебренниковой</p>
-      </article>
-    </div>
-    <details class="more">
-      <summary>Образование и авторские программы</summary>
-      <div class="more__in">
-        <p>Направления подготовки: психология управления, психоаналитическая терапия, схема-терапия, системная семейная терапия и расстановочная работа. Образование и подготовка заняли 15 лет.</p>
-        <p>Одиннадцать лет назад Марина создала авторскую программу «Истинная Я» — её прошли более 5 000 женщин. Позднее появилась программа «Путь к себе», которая объединила около 800 мужчин.</p>
-        <p>За этими цифрами — тысячи человеческих историй: обретения любви и создания семьи, смелых профессиональных решений, найденного призвания и внутренней целостности.</p>
       </div>
-    </details>
+      <div class="listen__side">
+        <ol class="playlist" aria-label="Выпуски с Мариной">
+          <li><a class="is-on" aria-current="true" href="https://www.youtube.com/watch?v=wDX1wui1-X4" data-pick="wDX1wui1-X4" target="_blank" rel="noopener"><img src="https://i.ytimg.com/vi/wDX1wui1-X4/mqdefault.jpg" width="320" height="180" alt="" loading="lazy" decoding="async"><span><small>Подкаст Алексея Голубева</small><b>Выводы за 18 лет практики семейного психолога: как сохранить страсть и любовь</b></span></a></li>
+          <li><a href="https://www.youtube.com/watch?v=67OfUn18Ot0" data-pick="67OfUn18Ot0" target="_blank" rel="noopener"><img src="https://i.ytimg.com/vi/67OfUn18Ot0/mqdefault.jpg" width="320" height="180" alt="" loading="lazy" decoding="async"><span><small>Орхан Мустафаев</small><b>Негативные мысли, тревожность, панические атаки: как справиться?</b></span></a></li>
+          <li><a href="https://www.youtube.com/watch?v=49fYBHJXmh8" data-pick="49fYBHJXmh8" target="_blank" rel="noopener"><img src="https://i.ytimg.com/vi/49fYBHJXmh8/mqdefault.jpg" width="320" height="180" alt="" loading="lazy" decoding="async"><span><small>«Новый Мир» с Ниной Серебренниковой</small><b>Одна привычка, которая на самом деле изменит жизнь</b></span></a></li>
+        </ol>
+        <details class="more">
+          <summary>Образование и авторские программы</summary>
+          <div class="more__in">
+            <p>Направления подготовки: психология управления, психоаналитическая терапия, схема-терапия, системная семейная терапия и расстановочная работа. Образование и подготовка заняли 15 лет.</p>
+            <p>Одиннадцать лет назад Марина создала авторскую программу «Истинная Я» — её прошли более 5 000 женщин. Позднее появилась программа «Путь к себе», которая объединила около 800 мужчин.</p>
+            <p>За этими цифрами — тысячи человеческих историй: обретения любви и создания семьи, смелых профессиональных решений, найденного призвания и внутренней целостности.</p>
+          </div>
+        </details>
+      </div>
+    </div>
   </div>
 </section>
 
 <section class="sheet sheet--paper" id="method">
-  <div class="wrap">
-    <div class="head head--wide">
+  <div class="wrap method">
+    <div class="method__text">
       <h2>Как устроена работа</h2>
-      <div>
-        <p class="lead">В основе — авторский метод Марины. Работа идёт на трёх уровнях и проходит четыре этапа.</p>
-        <p>В методе соединяются системная терапия, психоаналитические техники, расстановочная работа, телесные и эмоциональные практики. Всё это помогает понять себя, свою историю и то, как прошлый опыт влияет на жизнь сегодня.</p>
-      </div>
-    </div>
+      <p class="lead">В основе — авторский метод Марины: три уровня работы и четыре этапа.</p>
 
-    <div class="tabs" data-tabs>
-      <div class="tabs__bar" role="tablist" aria-label="Уровни и этапы работы">
-        <button type="button" role="tab" id="tab-levels" aria-controls="panel-levels" aria-selected="true">Три уровня</button>
-        <button type="button" role="tab" id="tab-stages" aria-controls="panel-stages" aria-selected="false">Четыре этапа</button>
+      <div class="tabs" data-tabs>
+        <div class="tabs__bar" role="tablist" aria-label="Уровни и этапы работы">
+          <button type="button" role="tab" id="tab-levels" aria-controls="panel-levels" aria-selected="true">Три уровня</button>
+          <button type="button" role="tab" id="tab-stages" aria-controls="panel-stages" aria-selected="false">Четыре этапа</button>
+        </div>
+        <ol class="tabs__panel steps" id="panel-levels" role="tabpanel" aria-labelledby="tab-levels">
+          <li><h3>Личность</h3><small>Личная история</small><p>Собственный опыт, детские переживания, внутренние конфликты и убеждения.</p></li>
+          <li><h3>Семья</h3><small>Отношения с родителями</small><p>Как мать и отец повлияли на чувство безопасности и уверенность. Не поиск виноватых, а принятие своей истории.</p></li>
+          <li><h3>Род</h3><small>История поколений</small><p>Семейные убеждения и модели, которые передаются из поколения в поколение: сохранить ценное, пересмотреть лишнее.</p></li>
+        </ol>
+        <ol class="tabs__panel steps" id="panel-stages" role="tabpanel" aria-labelledby="tab-stages">
+          <li><h3>Осознание</h3><p>Понять причины внутренних конфликтов, страхов и повторяющихся ситуаций.</p></li>
+          <li><h3>Проживание</h3><p>Бережно поработать с подавленными чувствами.</p></li>
+          <li><h3>Прощение и принятие</h3><p>Переосмыслить отношения с собой и близкими.</p></li>
+          <li><h3>Открытие нового</h3><p>Прийти к осознанным решениям и опоре на себя.</p></li>
+        </ol>
       </div>
-      <ul class="tabs__panel cols cols--3" id="panel-levels" role="tabpanel" aria-labelledby="tab-levels">
-        <li><svg viewBox="0 0 48 48" width="48" height="48" aria-hidden="true"><circle cx="24" cy="24" r="22" fill="none" stroke="#cfcabd" stroke-width="1.5"/><circle cx="24" cy="24" r="14" fill="none" stroke="#cfcabd" stroke-width="1.5"/><circle cx="24" cy="24" r="6" fill="#141412"/></svg><h3>Личность</h3><small>Личная история</small><p>Собственный опыт, детские переживания, внутренние конфликты и убеждения, которые формируют отношение к себе, людям и миру.</p></li>
-        <li><svg viewBox="0 0 48 48" width="48" height="48" aria-hidden="true"><circle cx="24" cy="24" r="22" fill="none" stroke="#cfcabd" stroke-width="1.5"/><circle cx="24" cy="24" r="14" fill="none" stroke="#141412" stroke-width="2.6"/><circle cx="24" cy="24" r="6" fill="#cfcabd"/></svg><h3>Семья</h3><small>Отношения с родителями</small><p>Влияние матери и отца на чувство безопасности, уверенность и способность принимать решения. Не поиск виноватых, а понимание и принятие своей истории.</p></li>
-        <li><svg viewBox="0 0 48 48" width="48" height="48" aria-hidden="true"><circle cx="24" cy="24" r="22" fill="none" stroke="#141412" stroke-width="2.6"/><circle cx="24" cy="24" r="14" fill="none" stroke="#cfcabd" stroke-width="1.5"/><circle cx="24" cy="24" r="6" fill="#cfcabd"/></svg><h3>Род</h3><small>История поколений</small><p>Семейные убеждения и модели поведения, которые передаются из поколения в поколение. Возможность сохранить ценное и пересмотреть то, что больше не служит.</p></li>
-      </ul>
-      <ol class="tabs__panel cols cols--4" id="panel-stages" role="tabpanel" aria-labelledby="tab-stages">
-        <li><h3>Осознание</h3><p>Понять причины внутренних конфликтов, страхов, повторяющихся ситуаций и ощущения застоя.</p></li>
-        <li><h3>Проживание</h3><p>Бережно поработать с чувствами, которые долго оставались подавленными.</p></li>
-        <li><h3>Прощение и принятие</h3><p>Переосмыслить отношения с собой и близкими, поработать с обидами, виной и стыдом.</p></li>
-        <li><h3>Открытие нового</h3><p>Перейти к более осознанным решениям, внутренней свободе и опоре на себя.</p></li>
-      </ol>
+      <p class="method__note">Программа работает и с лиминальностью — состоянием перехода, когда прежние ориентиры утратили значение, а новые ещё не сложились.</p>
     </div>
-    <p class="method__note">Бывают периоды, когда прежние ориентиры уже утратили значение, а новые ещё не сформировались. Такое состояние внутреннего перехода называют лиминальностью — CHARISMATA посвящена в том числе работе с ним.</p>
+    <figure class="method__photo"><img src="assets/img/est-mats-1000.webp" srcset="assets/img/est-mats-1000.webp 1000w, assets/img/est-mats.webp 2000w" sizes="(max-width: 900px) 92vw, 66vw" width="2000" height="1330" alt="Зал для практик: коврики и подушки на деревянном полу, каменные стены" loading="lazy" decoding="async"></figure>
   </div>
 </section>
 
@@ -204,20 +214,33 @@
     <div class="days__nav"><button type="button" data-dir="-1" aria-label="Предыдущие дни"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M14 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button type="button" data-dir="1" aria-label="Следующие дни"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M10 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
   </div>
   <div class="reel" tabindex="0" aria-label="Дни программы">
-    <article class="day"><figure><img src="assets/img/est-lane-1000.webp" srcset="assets/img/est-lane-1000.webp 1000w, assets/img/est-lane.webp 2000w" sizes="(max-width: 900px) 76vw, 26vw" width="1000" height="669" alt="" loading="lazy" decoding="async"><figcaption>18 апреля, вс</figcaption></figure><h3>Прибытие. Начало пути</h3><p>Размещение в уединённой усадьбе — вне привычного ритма и суеты. Знакомство с пространством и участниками, приветственный ужин и первая встреча.</p></article>
-    <article class="day"><figure><img src="assets/img/est-hall-1000.webp" srcset="assets/img/est-hall-1000.webp 1000w, assets/img/est-hall.webp 2000w" sizes="(max-width: 900px) 76vw, 26vw" width="1000" height="1000" alt="" loading="lazy" decoding="async"><figcaption>19 апреля, пн</figcaption></figure><h3>Встреча с собой</h3><p>Первый день психологической работы. Индивидуальные и групповые процессы, которые позволяют выйти за пределы привычного восприятия и по-новому взглянуть на себя и собственную историю.</p></article>
-    <article class="day"><figure><img src="assets/img/est-deck-1000.webp" srcset="assets/img/est-deck-1000.webp 1000w, assets/img/est-deck.webp 2000w" sizes="(max-width: 900px) 76vw, 26vw" width="1000" height="663" alt="" loading="lazy" decoding="async"><figcaption>20 апреля, вт</figcaption></figure><h3>Глубина отношений</h3><p>Исследование мира отношений, чувств и невидимых связей, которые влияют на нашу жизнь.</p></article>
-    <article class="day"><figure><img src="assets/img/est-grass-1000.webp" srcset="assets/img/est-grass-1000.webp 1000w, assets/img/est-grass.webp 2000w" sizes="(max-width: 900px) 76vw, 26vw" width="1000" height="735" alt="" loading="lazy" decoding="async"><figcaption>21 апреля, ср</figcaption></figure><h3>Освобождение и восстановление</h3><p>Пространство для осмысления, проживания и принятия собственного опыта. Возвращение к телу и собственным ощущениям.</p></article>
-    <article class="day"><figure><img src="assets/img/est-fire-1000.webp" srcset="assets/img/est-fire-1000.webp 1000w, assets/img/est-fire.webp 2000w" sizes="(max-width: 900px) 76vw, 26vw" width="1000" height="967" alt="" loading="lazy" decoding="async"><figcaption>22 апреля, чт</figcaption></figure><h3>Сила рода</h3><p>Обращение к истории своего рода — источнику силы, стойкости и жизненной энергии. Возможность принять наследие поколений и почувствовать внутреннюю опору.</p></article>
-    <article class="day"><figure><img src="assets/img/est-living-1000.webp" srcset="assets/img/est-living-1000.webp 1000w, assets/img/est-living.webp 2000w" sizes="(max-width: 900px) 76vw, 26vw" width="1000" height="1000" alt="" loading="lazy" decoding="async"><figcaption>23 апреля, пт</figcaption></figure><h3>Новое начало</h3><p>Завершающий день психологической работы: время увидеть привычную реальность под другим углом и найти направление, в котором новые открытия станут частью жизни. Вечером — заключительный гала-ужин.</p></article>
-    <article class="day"><figure><img src="assets/img/est-aerial-1000.webp" srcset="assets/img/est-aerial-1000.webp 1000w, assets/img/est-aerial.webp 2000w" sizes="(max-width: 900px) 76vw, 26vw" width="1000" height="635" alt="" loading="lazy" decoding="async"><figcaption>24 апреля, сб</figcaption></figure><h3>Возвращение. Своим путём</h3><p>Неспешное утро, завтрак и прощание. Возвращение в привычный мир — с новым взглядом на себя.</p></article>
+    <article class="day"><figure><img src="assets/img/est-lane-1000.webp" srcset="assets/img/est-lane-1000.webp 1000w, assets/img/est-lane.webp 2000w" sizes="(max-width: 900px) 78vw, 30vw" width="1000" height="669" alt="" loading="lazy" decoding="async"><figcaption><span>18 апреля, вс</span><h3>Прибытие. Начало пути</h3></figcaption></figure><p>Размещение в усадьбе, знакомство с пространством и участниками, приветственный ужин.</p></article>
+    <article class="day"><figure><img src="assets/img/est-hall-1000.webp" srcset="assets/img/est-hall-1000.webp 1000w, assets/img/est-hall.webp 2000w" sizes="(max-width: 900px) 78vw, 30vw" width="1000" height="1000" alt="" loading="lazy" decoding="async"><figcaption><span>19 апреля, пн</span><h3>Встреча с собой</h3></figcaption></figure><p>Первый день психологической работы: по-новому взглянуть на себя и собственную историю.</p></article>
+    <article class="day"><figure><img src="assets/img/est-deck-1000.webp" srcset="assets/img/est-deck-1000.webp 1000w, assets/img/est-deck.webp 2000w" sizes="(max-width: 900px) 78vw, 30vw" width="1000" height="663" alt="" loading="lazy" decoding="async"><figcaption><span>20 апреля, вт</span><h3>Глубина отношений</h3></figcaption></figure><p>Отношения, чувства и невидимые связи, которые влияют на нашу жизнь.</p></article>
+    <article class="day"><figure><img src="assets/img/est-grass-1000.webp" srcset="assets/img/est-grass-1000.webp 1000w, assets/img/est-grass.webp 2000w" sizes="(max-width: 900px) 78vw, 30vw" width="1000" height="735" alt="" loading="lazy" decoding="async"><figcaption><span>21 апреля, ср</span><h3>Освобождение и восстановление</h3></figcaption></figure><p>Проживание и принятие собственного опыта. Возвращение к телу.</p></article>
+    <article class="day"><figure><img src="assets/img/est-fire-1000.webp" srcset="assets/img/est-fire-1000.webp 1000w, assets/img/est-fire.webp 2000w" sizes="(max-width: 900px) 78vw, 30vw" width="1000" height="967" alt="" loading="lazy" decoding="async"><figcaption><span>22 апреля, чт</span><h3>Сила рода</h3></figcaption></figure><p>История рода как источник силы, стойкости и внутренней опоры.</p></article>
+    <article class="day"><figure><img src="assets/img/est-living-1000.webp" srcset="assets/img/est-living-1000.webp 1000w, assets/img/est-living.webp 2000w" sizes="(max-width: 900px) 78vw, 30vw" width="1000" height="1000" alt="" loading="lazy" decoding="async"><figcaption><span>23 апреля, пт</span><h3>Новое начало</h3></figcaption></figure><p>Завершающий день работы: найти новое направление. Вечером — гала-ужин.</p></article>
+    <article class="day"><figure><img src="assets/img/est-aerial-1000.webp" srcset="assets/img/est-aerial-1000.webp 1000w, assets/img/est-aerial.webp 2000w" sizes="(max-width: 900px) 78vw, 30vw" width="1000" height="635" alt="" loading="lazy" decoding="async"><figcaption><span>24 апреля, сб</span><h3>Возвращение. Своим путём</h3></figcaption></figure><p>Неспешное утро, завтрак и прощание.</p></article>
   </div>
   <div class="wrap">
-    <ul class="chips" aria-label="Что дополняет работу">
-      <li class="chips__t">Что дополняет работу</li>
-      <li>Звукотерапия</li><li>Дыхательные практики</li><li>Утренняя йога для желающих</li><li>Ритуал огня</li><li>Церемония какао</li><li>Практики расслабления и восстановления</li><li>Вечера у огня</li><li>Заключительный гала-ужин</li>
-    </ul>
-    <p class="muted chips__note">Всё проходит на территории усадьбы: приглашённые специалисты приезжают к участникам.</p>
+    <!-- линия прокрутки ленты -->
+    <div class="days__bar" aria-hidden="true"><i></i></div>
+    <div class="extras">
+      <div class="extras__head">
+        <h3>Что дополняет работу</h3>
+        <p>Всё проходит на территории усадьбы: приглашённые специалисты приезжают к участникам.</p>
+      </div>
+      <ul class="extras__list">
+        <li>Звукотерапия</li>
+        <li>Дыхательные практики</li>
+        <li>Утренняя йога для желающих</li>
+        <li>Ритуал огня</li>
+        <li>Церемония какао</li>
+        <li>Практики расслабления и восстановления</li>
+        <li>Вечера у огня</li>
+        <li>Заключительный гала-ужин</li>
+      </ul>
+    </div>
   </div>
 </section>
 
@@ -225,35 +248,35 @@
   <div class="wrap">
     <div class="head head--wide">
       <h2>Где это происходит</h2>
-      <div>
-        <p class="lead">В уединённой усадьбе среди лесов, холмов и открытых просторов Португалии. Покидать её не нужно: всё проходит на месте.</p>
-        <p>Здесь жизнь течёт в другом ритме. Пространство, тишина, природа, лошади, свежие фермерские продукты и вечера у огня помогают оставить повседневную суету позади.</p>
-      </div>
+      <p class="lead">Уединённая усадьба среди лесов и холмов Португалии. Покидать её не нужно: всё проходит на месте.</p>
     </div>
     <!-- Фото площадки. Люди на снимках — не участники CHARISMATA, права проверить -->
-    <div class="mosaic">
-      <figure><img src="assets/img/est-lane-1000.webp" srcset="assets/img/est-lane-1000.webp 1000w, assets/img/est-lane.webp 2000w" sizes="(max-width: 900px) 82vw, 56vw" width="2000" height="1338" alt="Дорожка между белыми домами усадьбы, старая сосна и лаванда" loading="lazy" decoding="async"><figcaption>Территория</figcaption></figure>
-      <figure><img src="assets/img/est-aerial-1000.webp" srcset="assets/img/est-aerial-1000.webp 1000w, assets/img/est-aerial.webp 2000w" sizes="(max-width: 900px) 82vw, 40vw" width="1000" height="635" alt="Усадьба среди холмов — вид с высоты" loading="lazy" decoding="async"><figcaption>Усадьба с высоты</figcaption></figure>
-      <figure><img src="assets/img/est-living-1000.webp" srcset="assets/img/est-living-1000.webp 1000w, assets/img/est-living.webp 2000w" sizes="(max-width: 900px) 82vw, 40vw" width="1000" height="1000" alt="Гостиная с деревянными балками и светлыми диванами" loading="lazy" decoding="async"><figcaption>Гостиная</figcaption></figure>
-      <figure><img src="assets/img/est-hall-1000.webp" srcset="assets/img/est-hall-1000.webp 1000w, assets/img/est-hall.webp 2000w" sizes="(max-width: 900px) 82vw, 40vw" width="1000" height="1000" alt="Светлый зал с каменными стенами и креслами по кругу" loading="lazy" decoding="async"><figcaption>Зал для психологической работы</figcaption></figure>
-      <figure><img src="assets/img/est-facade-1000.webp" srcset="assets/img/est-facade-1000.webp 1000w, assets/img/est-facade.webp 2000w" sizes="(max-width: 900px) 82vw, 40vw" width="1000" height="562" alt="Главный дом усадьбы: белые стены и черепичная крыша" loading="lazy" decoding="async"><figcaption>Главный дом</figcaption></figure>
-    </div>
-    <div class="food">
-      <h3>Питание</h3>
-      <p>Мы предлагаем преимущественно вегетарианское питание из свежих фермерских продуктов: сезонные овощи, фрукты, зелень, крупы и бобовые. Так легче сохранять ощущение лёгкости во время насыщенной программы.</p>
-      <p>Тем, кто предпочитает животный белок, рацион дополнят белым мясом или рыбой. Аллергии и ограничения мы уточним в анкете.</p>
+    <div class="place">
+      <div class="mosaic">
+        <figure><img src="assets/img/est-lane-1000.webp" srcset="assets/img/est-lane-1000.webp 1000w, assets/img/est-lane.webp 2000w" sizes="82vw" width="2000" height="1338" alt="Дорожка между белыми домами усадьбы, старая сосна и лаванда" loading="lazy" decoding="async"><figcaption>Территория</figcaption></figure>
+        <figure><img src="assets/img/est-aerial-1000.webp" srcset="assets/img/est-aerial-1000.webp 1000w, assets/img/est-aerial.webp 2000w" sizes="(max-width: 900px) 82vw, 54vw" width="1000" height="635" alt="Усадьба среди холмов — вид с высоты" loading="lazy" decoding="async"><figcaption>Усадьба с высоты</figcaption></figure>
+        <figure><img src="assets/img/est-living-1000.webp" srcset="assets/img/est-living-1000.webp 1000w, assets/img/est-living.webp 2000w" sizes="(max-width: 900px) 82vw, 24vw" width="1000" height="1000" alt="Гостиная с деревянными балками и светлыми диванами" loading="lazy" decoding="async"><figcaption>Гостиная</figcaption></figure>
+        <figure><img src="assets/img/est-hall-1000.webp" srcset="assets/img/est-hall-1000.webp 1000w, assets/img/est-hall.webp 2000w" sizes="(max-width: 900px) 82vw, 32vw" width="1000" height="1000" alt="Светлый зал с каменными стенами и креслами по кругу" loading="lazy" decoding="async"><figcaption>Зал для психологической работы</figcaption></figure>
+        <figure><img src="assets/img/est-facade-1000.webp" srcset="assets/img/est-facade-1000.webp 1000w, assets/img/est-facade.webp 2000w" sizes="(max-width: 900px) 82vw, 54vw" width="1000" height="562" alt="Главный дом усадьбы: белые стены и черепичная крыша" loading="lazy" decoding="async"><figcaption>Главный дом</figcaption></figure>
+      </div>
+      <div class="food">
+        <h3>Питание</h3>
+        <div>
+          <p>Преимущественно вегетарианское, из свежих фермерских продуктов.</p>
+          <p>По желанию — белое мясо или рыба. Аллергии и ограничения уточним в анкете.</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
 <section class="sheet" id="community">
   <div class="wrap circle">
-    <figure><img src="assets/img/est-fire-1000.webp" srcset="assets/img/est-fire-1000.webp 1000w, assets/img/est-fire.webp 2000w" sizes="(max-width: 900px) 92vw, 42vw" width="2000" height="1934" alt="Вечер у живого огня во дворе усадьбы" loading="lazy" decoding="async"></figure>
+    <figure><img src="assets/img/est-fire-1000.webp" srcset="assets/img/est-fire-1000.webp 1000w, assets/img/est-fire.webp 2000w" sizes="(max-width: 900px) 92vw, 42vw" width="2000" height="1934" alt="Вечер у живого огня во дворе усадьбы" loading="lazy" decoding="async"><figcaption class="glass"><b>до 25</b><span>человек<br>в группе</span></figcaption></figure>
     <div>
       <h2>Кто будет рядом</h2>
-      <p class="lead">В группе не больше 25 человек. Случайных людей здесь нет: каждый проходит предварительное знакомство.</p>
-      <p>За пределами привычных ролей и достижений все равны. Мы уважаем путь и масштаб личности каждого, но в психологической работе на первом месте — человек, его история и чувства.</p>
-      <p>После насыщенных дней мы будем собираться у огня, разговаривать или просто молчать.</p>
+      <p class="lead">В группе не больше 25 человек, каждый проходит предварительное знакомство.</p>
+      <p>Вне привычных ролей и достижений все равны. По вечерам — огонь, разговоры или тишина.</p>
       <dl class="rules">
         <div><dt>Доверие</dt><dd>Можно говорить открыто и быть собой — без страха оценки.</dd></div>
         <div><dt>Уважение</dt><dd>Каждый опыт важен. Мы бережно относимся к истории другого.</dd></div>
@@ -269,6 +292,7 @@
     <div class="whom__head">
       <h2>Кому подходит</h2>
       <p class="lead">Тем, кто чувствует, что способен на большее, и готов к глубокой работе с собой.</p>
+      <a class="btn btn--light btn--go whom__cta" href="apply.html">Подать заявку<i aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></i></a>
     </div>
     <ul class="whom__list">
       <li><b>Вы многого достигли,</b> но чувствуете, что ваши возможности шире уже реализованного.</li>
@@ -282,55 +306,52 @@
 
 <section class="sheet sheet--paper" id="join">
   <div class="wrap">
-    <div class="head head--wide">
-      <h2>Стоимость участия</h2>
-      <div>
+    <div class="offer">
+      <img class="offer__bg" src="assets/img/est-aerial-1000.webp" srcset="assets/img/est-aerial-1000.webp 1000w, assets/img/est-aerial.webp 2000w" sizes="(max-width: 900px) 180vw, 94vw" width="2000" height="1270" alt="Усадьба с высоты: дома под черепицей, сад и бассейн" loading="lazy" decoding="async">
+      <div class="offer__head">
+        <h2>Стоимость участия</h2>
         <p class="lead">Цена за всю программу на одного участника.</p>
         <p>Оплата — только после знакомства и подтверждения участия.</p>
       </div>
-    </div>
-    <div class="prices">
-      <figure class="prices__photo"><img src="assets/img/est-aerial-1000.webp" srcset="assets/img/est-aerial-1000.webp 1000w, assets/img/est-aerial.webp 2000w" sizes="(max-width: 900px) 92vw, 36vw" width="2000" height="1270" alt="Усадьба с высоты: дома под черепицей, сад и бассейн" loading="lazy" decoding="async"><figcaption>Семь дней в усадьбе, 18–24 апреля 2027</figcaption></figure>
-      <div class="price">
-        <p class="price__name">Одноместное размещение</p>
-        <p class="price__desc">Комната только для вас.</p>
-        <!-- схема комнаты: одна кровать -->
-        <svg class="price__icon" viewBox="0 0 96 96" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="26" y="10" width="44" height="76" rx="9"/><rect x="34" y="18" width="28" height="16" rx="6"/><path d="M26 44h44"/></g></svg>
-        <p class="price__sum">3 500 €</p>
-        <p class="price__note">за всю программу</p>
-      </div>
-      <div class="price">
-        <p class="price__name">Двухместное размещение</p>
-        <p class="price__desc">Комната на двоих — с другим участником программы.</p>
-        <!-- схема комнаты: две кровати -->
-        <svg class="price__icon" viewBox="0 0 96 96" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="10" width="36" height="76" rx="8"/><rect x="14" y="18" width="24" height="15" rx="5"/><path d="M8 43h36"/><rect x="52" y="10" width="36" height="76" rx="8"/><rect x="58" y="18" width="24" height="15" rx="5"/><path d="M52 43h36"/></g></svg>
-        <p class="price__sum">3 000 €</p>
-        <p class="price__note">за всю программу, с каждого участника</p>
+      <div class="offer__panel glass">
+        <dl class="offer__prices">
+          <div>
+            <dt>Одноместное размещение<small>Комната только для вас.</small></dt>
+            <dd>3 500 €<small>за всю программу</small></dd>
+          </div>
+          <div>
+            <dt>Двухместное размещение<small>Комната на двоих — с другим участником программы.</small></dt>
+            <dd>3 000 €<small>за всю программу, с каждого участника</small></dd>
+          </div>
+        </dl>
+        <a class="btn btn--light btn--go offer__cta" href="apply.html">Подать заявку<i aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></i></a>
       </div>
     </div>
 
     <h3 class="sub">Как попасть на программу</h3>
     <ol class="flow">
-      <li><b>Анкета</b><span>Вы рассказываете о себе, своём жизненном этапе и о том, что привело вас к CHARISMATA.</span></li>
+      <li><b>Анкета</b><span>Расскажите о себе и о том, что привело вас к CHARISMATA.</span></li>
       <li><b>Рассмотрение</b><span>Марина лично читает каждую анкету.</span></li>
-      <li><b>Онлайн-знакомство</b><span>Мы встречаемся, обсуждаем ожидания и вместе понимаем, подходит ли вам программа.</span></li>
-      <li><b>Подтверждение</b><span>После взаимного решения вы получаете договор, условия бронирования и персональную ссылку для оплаты.</span></li>
+      <li><b>Онлайн-знакомство</b><span>Вместе понимаем, подходит ли вам программа.</span></li>
+      <li><b>Подтверждение</b><span>Договор, условия бронирования и персональная ссылка для оплаты.</span></li>
     </ol>
-    <div class="join__go">
-      <a class="btn btn--lg" href="apply.html">Подать заявку</a>
-      <p class="muted">Количество мест ограничено. Отправка анкеты не гарантирует участие: каждая заявка рассматривается индивидуально.</p>
-    </div>
+    <p class="muted join__note">Количество мест ограничено. Отправка анкеты не гарантирует участие.</p>
   </div>
 </section>
 
-<section class="sheet sheet--warm sheet--form" id="apply">
-  <div class="wrap split">
+</main>
+
+<!-- финал: одна вечерняя сцена на всю ширину — анкета на тёмном «стекле» и под ней подвал -->
+<div class="sheet finale">
+  <img class="finale__bg" src="assets/img/est-fire-1000.webp" srcset="assets/img/est-fire-1000.webp 1000w, assets/img/est-fire.webp 2000w" sizes="(max-width: 900px) 240vw, 100vw" width="2000" height="1934" alt="" loading="lazy" decoding="async">
+
+  <section class="wrap split" id="apply" aria-labelledby="apply-title">
     <div class="split__head">
-      <h2>Анкета</h2>
+      <h2 id="apply-title">Анкета</h2>
       <p class="lead">Начните со знакомства: девять коротких вопросов, около пяти минут.</p>
-      <p>Анкету читает Марина. Ответы видят только она и организаторы программы.</p>
+      <p class="reader"><img src="assets/img/marina-face.webp" width="88" height="88" alt="" loading="lazy" decoding="async"><span>Анкету читает Марина. Ответы видят только она и организаторы программы.</span></p>
     </div>
-    <div class="formbox">
+    <div class="formbox formbox--glass">
       <form class="form" id="apply-form" action="send.php" method="post" novalidate>
         <div class="form__top">
           <p class="form__count">Вопрос <b data-step-now>1</b> из <span data-step-total>9</span></p>
@@ -471,37 +492,30 @@
         <p class="form-done__note">Отправка анкеты не гарантирует участие: решение принимается после знакомства и оно взаимное.</p>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-</main>
-
-<footer class="sheet sheet--ink ftr">
-  <img class="ftr__bg" src="assets/img/est-fire-1000.webp" width="1000" height="967" alt="" loading="lazy" decoding="async">
-  <div class="wrap">
-    <div class="ftr__top">
-      <div>
-        <p class="ftr__tag">Искусство раскрывать свою истинную силу</p>
-        <a class="btn btn--light" href="apply.html">Подать заявку</a>
+  <footer class="wrap ftr">
+    <div class="ftr__panel glass">
+      <div class="ftr__row">
+        <a class="ftr__logo" href="#top" aria-label="CHARISMATA — наверх">CHARISMATA</a>
+        <nav class="ftr__nav" aria-label="Навигация в подвале">
+          <a href="#about">О программе</a>
+          <a href="#marina">Марина Нахалова</a>
+          <a href="#method">Как устроена работа</a>
+          <a href="#program">Семь дней</a>
+          <a href="#space">Место</a>
+          <a href="#for">Кому подходит</a>
+          <a href="#join">Стоимость</a>
+          <a href="#apply">Анкета</a>
+        </nav>
       </div>
-      <nav class="ftr__nav" aria-label="Навигация в подвале">
-        <a href="#about">О программе</a>
-        <a href="#marina">Марина Нахалова</a>
-        <a href="#method">Как устроена работа</a>
-        <a href="#program">Семь дней</a>
-        <a href="#space">Место</a>
-        <a href="#for">Кому подходит</a>
-        <a href="#join">Стоимость</a>
-        <a href="#apply">Анкета</a>
-      </nav>
+      <div class="ftr__base">
+        <p>Авторская психологическая программа Марины Нахаловой. 18–24 апреля 2027 года, Португалия.</p>
+        <a href="privacy.html">Политика конфиденциальности</a>
+      </div>
     </div>
-    <p class="ftr__word" aria-hidden="true">CHARISMATA</p>
-    <div class="ftr__base">
-      <p>Авторская психологическая программа Марины Нахаловой. 18–24 апреля 2027 года, Португалия.</p>
-      <a href="privacy.html">Политика конфиденциальности</a>
-    </div>
-  </div>
-</footer>
+  </footer>
+</div>
 
 <!-- Плавающая кнопка заявки: появляется после первого экрана -->
 <div class="dock" id="dock" aria-hidden="true">
@@ -510,6 +524,6 @@
   <a class="dock__btn" href="apply.html" tabindex="-1">Подать заявку<i aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></i></a>
 </div>
 
-<script src="assets/js/main.js?v=1564096122" defer></script>
+<script src="assets/js/main.js?v=4250082883" defer></script>
 </body>
 </html>

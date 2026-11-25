@@ -219,6 +219,11 @@ h2 + .lead, h2 + p { margin-top: clamp(16px, 2vw, 26px); }
    сверху и снизу снимок тоже уходит в фон (окно над головой закрашено на самом снимке) */
 .marina figure { aspect-ratio: 4 / 5; --mx: linear-gradient(90deg, transparent 0, rgba(0, 0, 0, .5) 14%, #000 30%, #000 72%, rgba(0, 0, 0, .5) 87%, transparent 100%); --my: linear-gradient(180deg, transparent 0, #000 13%, #000 74%, transparent 100%); -webkit-mask-image: var(--mx), var(--my); -webkit-mask-composite: source-in; mask-image: var(--mx), var(--my); mask-composite: intersect; }
 .marina img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; }
+/* светлое фото: обычный снимок со скруглёнными углами, без растворения в фоне */
+#marina.marina--photo { padding-bottom: calc(var(--gap) + 36px); }
+.marina--photo .marina { align-items: center; }
+.marina--photo .marina figure { overflow: hidden; border-radius: 30px; -webkit-mask-image: none; mask-image: none; }
+.marina--photo .marina__text { padding-block: 0; }
 .marina__text { align-self: center; padding-block: clamp(10px, 3vw, 40px) clamp(48px, 8vw, 110px); }
 .marina__text .lead { max-width: 22em; }
 .marina__text > p:not(.lead) { max-width: 32em; }
@@ -526,6 +531,8 @@ h2 + .lead, h2 + p { margin-top: clamp(16px, 2vw, 26px); }
   .method__photo img { object-position: 50% 50%; }
   #marina { padding-bottom: 28px; }
   .marina figure { width: min(100%, 26rem); margin-inline: auto; aspect-ratio: 4 / 5; }
+  #marina.marina--photo { padding-bottom: calc(var(--gap) + 28px); }
+  .marina--photo .marina figure { width: 100%; border-radius: 24px; }
   .marina__text { padding-block: 0 clamp(28px, 7vw, 56px); }
   .listen { grid-template-columns: minmax(0, 1fr); gap: 12px; }
   .video__thumb, .video__frame { border-radius: 24px; }

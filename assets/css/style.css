@@ -108,7 +108,9 @@ h2 + .lead, h2 + p { margin-top: clamp(16px, 2vw, 26px); }
 /* слой заставки лежит над фильмом, но под вуалью первого экрана — поэтому раскрытый кадр совпадает с фильмом */
 .has-intro .intro { display: block; position: absolute; inset: 0; z-index: -2; background: #0d0e0f; pointer-events: none; transition: opacity .5s ease; }
 .intro.is-gone { opacity: 0; }
-.intro__win { position: absolute; top: var(--wt, 34%); left: var(--wl, 40%); width: var(--ww, 20%); height: var(--wh, 40%); overflow: hidden; border-radius: 22px; background: #1b1e20; }
+.intro__win { position: absolute; top: var(--wt, 34%); left: var(--wl, 40%); width: var(--ww, 20%); height: var(--wh, 40%); overflow: hidden; border-radius: 22px; background: #1b1e20; opacity: 0; transition: opacity .35s ease; }
+/* окно появляется вместе с первым кадром — пустой рамки на тёмном экране не видно */
+.intro__win.is-ready { opacity: 1; }
 .intro__win img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; }
 .intro__win img.is-on { opacity: 1; }
 .intro__last { animation: zoom 10s linear both; }

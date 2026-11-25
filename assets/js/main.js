@@ -149,8 +149,10 @@
       tasks.forEach(t => t.then(() => { ready++; }));
       Promise.all(tasks).then(() => { all = true; });
       let shown = 0, k = -1, swap = 0;
-      const show = img => pics.forEach(p => p.classList.toggle('is-on', p === img));
+      const show = img => { pics.forEach(p => p.classList.toggle('is-on', p === img)); win.classList.add('is-ready'); };
+      let alive = false;
       const tick = now => {
+        if (!alive) { alive = true; clearTimeout(window.charismataIntroSafety); }   // скрипт работает — страховка не нужна
         const time = Math.min(1, Math.max(0, now - t0) / MIN);   // время кадра может быть чуть раньше t0
         if (now - t0 > MAX) all = true;
         const target = all ? time : Math.min(time, .12 + .78 * ready / tasks.length);

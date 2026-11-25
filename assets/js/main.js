@@ -154,15 +154,64 @@
       cur = i;
       schedule();
     };
-    marks.forEach((m, i) => m.addEventListener('click', () => go(i, true)));
+    // Запасной показ фотографиями — когда видео нет (экономия трафика, «меньше движения», ошибка)
+    let mode = 'slides';
+    const startSlides = () => {
+      mode = 'slides';
+      marks.forEach(m => { const bar = m.firstElementChild; if (bar) bar.style.transform = ''; });
+      restartBar(marks[cur]);
+      schedule();
+      if (!saveData) {
+        const loadRest = () => setTimeout(() => slides.forEach(loadSlide), 500);
+        if (doc.readyState === 'complete') loadRest(); else addEventListener('load', loadRest);
+      }
+    };
+    marks.forEach((m, i) => m.addEventListener('click', () => {
+      if (mode === 'video') video.currentTime = i * SEG; else go(i, true);
+    }));
     // вкладка ушла в фон — останавливаемся, вернулась — продолжаем с начала полоски
     doc.addEventListener('visibilitychange', () => {
+      if (mode !== 'slides') return;
       if (doc.hidden) clearTimeout(timer); else { restartBar(marks[cur]); schedule(); }
     });
-    schedule();
-    if (!saveData) {
-      const loadRest = () => setTimeout(() => slides.forEach(loadSlide), 500);
-      if (doc.readyState === 'complete') loadRest(); else addEventListener('load', loadRest);
+
+    // Оживлённый фильм: одно видео по кругу, в нём 4 кадра по SEG секунд (смена — на середине перехода).
+    // Полоски и подпись кадра следуют за временем видео, клик по полоске перематывает к кадру.
+    const video = $('.film__video', hero);
+    const SEG = 4;
+    if (video && !reduce && !saveData) {
+      mode = 'video';
+      const webm = video.canPlayType('video/webm; codecs="vp9"');
+      video.src = small ? video.dataset.mp4M : (webm ? video.dataset.webm : video.dataset.mp4);
+      video.preload = 'auto';
+      let shown = -1, raf = 0;
+      const tick = () => {
+        const t = video.currentTime, n = marks.length;
+        const i = Math.floor((t + SEG / 8) / SEG) % n;
+        const p = Math.min(1, Math.max(0, (t - i * SEG + SEG / 8) / SEG));
+        marks.forEach((m, k) => {
+          const bar = m.firstElementChild;
+          if (bar) bar.style.transform = `scaleX(${k < i ? 1 : k === i ? p : 0})`;
+        });
+        if (i !== shown) {
+          shown = i;
+          marks.forEach((m, k) => { m.classList.toggle('is-on', k === i); m.classList.toggle('is-done', k < i); });
+          if (frameNow) frameNow.textContent = String(i + 1).padStart(2, '0');
+          if (frameCap) frameCap.textContent = marks[i].textContent.trim();
+        }
+        raf = requestAnimationFrame(tick);
+      };
+      video.addEventListener('playing', () => {
+        hero.classList.add('is-video');
+        cancelAnimationFrame(raf); raf = requestAnimationFrame(tick);
+      });
+      video.addEventListener('pause', () => cancelAnimationFrame(raf));
+      const fail = () => { if (mode === 'video') { hero.classList.remove('is-video'); video.removeAttribute('src'); startSlides(); } };
+      video.addEventListener('error', fail);
+      const p = video.play();
+      if (p && p.catch) p.catch(fail);     // автозапуск запрещён (режим энергосбережения и т. п.)
+    } else {
+      startSlides();
     }
   }
 

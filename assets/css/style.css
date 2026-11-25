@@ -92,6 +92,10 @@ h2 + .lead, h2 + p { margin-top: clamp(16px, 2vw, 26px); }
 .film img.is-on, .film img.is-out { animation: zoom 10s linear both; }
 .film img.is-on { opacity: 1; }
 @keyframes zoom { from { transform: scale(1.03); } to { transform: scale(1.13); } }
+/* видео поверх первого кадра: проявляется, когда заиграло; полоски тогда ведёт время видео */
+.film__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1s ease; }
+.is-video .film__video { opacity: 1; }
+.is-video .reelnav .is-on i { animation: none; }
 /* лёгкая вуаль сверху под шапкой и плотнее книзу, где стоит текст */
 .hero::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(14, 22, 30, .5) 0%, rgba(14, 22, 30, .2) 22%, rgba(14, 22, 30, .36) 44%, rgba(14, 22, 30, .64) 72%, rgba(14, 22, 30, .86) 100%); }
 /* Заставка (один раз за посещение): тёмная шторка быстро уходит вверх, следом появляются шапка и текст */

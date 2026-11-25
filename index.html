@@ -30,7 +30,7 @@
 <link rel="preload" as="image" href="assets/img/est-lane.webp" media="(min-width: 701px)">
 <link rel="preload" as="image" href="assets/img/film-lane-m.webp" media="(max-width: 700px)">
 <link href="https://fonts.googleapis.com/css2?family=Forum&family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=3329009614">
+<link rel="stylesheet" href="assets/css/style.css?v=1691001758">
 </head>
 <body class="has-hero">
 
@@ -75,7 +75,11 @@
       <source media="(max-width: 700px)" srcset="assets/img/film-lane-m.webp">
       <img class="is-on" src="assets/img/est-lane.webp" width="2000" height="1338" style="object-position:56% 55%" alt="Аллея усадьбы: старая сосна и лаванда" fetchpriority="high">
     </picture>
-    <!-- остальные кадры подгружаются после загрузки страницы -->
+    <!-- оживлённые кадры одним видео (Kling + Hailuo, склейка — tools/hero-video/build.sh);
+         адрес ставит скрипт, пока видео не заиграло — виден первый кадр-фото -->
+    <video class="film__video" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"
+      data-mp4="assets/video/hero.mp4" data-webm="assets/video/hero.webm" data-mp4-m="assets/video/hero-m.mp4"></video>
+    <!-- запасной вариант без видео: остальные кадры подгружаются после загрузки страницы -->
     <img data-src="assets/img/est-deck.webp" data-src-m="assets/img/film-deck-m.webp" width="2000" height="1326" style="object-position:60% 62%" alt="Утренняя практика на террасе усадьбы">
     <img data-src="assets/img/est-facade.webp" data-src-m="assets/img/film-house-m.webp" width="2000" height="1124" style="object-position:60% 50%" alt="Главный дом усадьбы под синим небом">
     <img data-src="assets/img/est-fire.webp" data-src-m="assets/img/film-fire-m.webp" width="2000" height="1934" style="object-position:50% 70%" alt="Вечер у огня во дворе усадьбы">
@@ -524,6 +528,6 @@
   <a class="dock__btn" href="apply.html" tabindex="-1">Подать заявку<i aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></i></a>
 </div>
 
-<script src="assets/js/main.js?v=4250082883" defer></script>
+<script src="assets/js/main.js?v=2138991917" defer></script>
 </body>
 </html>

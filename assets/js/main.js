@@ -40,30 +40,6 @@
     });
   })(doc.body);
 
-  /* ───────── Появление блоков при прокрутке ─────────
-     Скрипт сам размечает блоки и ставит класс rv-on; если он не загрузился, ничего не прячется. */
-  (() => {
-    if (reduce || !('IntersectionObserver' in window)) return;
-    const IMAGES = '.marina figure, .mosaic figure, .circle figure, .prices__photo';
-    const BLOCKS = '.sheet h2, .sheet .lead, .head__sub, .about p:not(.lead), .facts > div, .marina__text > p:not(.lead), .stats > div, .video, .more, .tabs, .method__note, .day, .chips, .chips__note, .food, .circle p:not(.lead), .rules > div, .whom__list li, .sub, .price, .flow li, .join__go, .split__head > p:not(.lead), .formbox, .ftr__top, .ftr__word, .ftr__base';
-    $$(IMAGES).forEach(el => el.setAttribute('data-rv', 'img'));
-    $$(BLOCKS).forEach(el => { if (!el.closest('[data-rv]')) el.setAttribute('data-rv', ''); });
-    // соседние блоки появляются по очереди
-    $$('[data-rv]').forEach(el => {
-      const i = Array.from(el.parentNode.children).filter(c => c.hasAttribute('data-rv')).indexOf(el);
-      if (i > 0) el.style.setProperty('--rv-d', (Math.min(i, 5) * 0.08).toFixed(2) + 's');
-    });
-    const io = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (!e.isIntersecting) return;
-        e.target.classList.add('is-in');
-        io.unobserve(e.target);
-      });
-    }, { threshold: 0.05 });   // без отступа снизу: иначе последняя строка подвала никогда не «войдёт» в экран
-    html.classList.add('rv-on');
-    $$('[data-rv]').forEach(el => io.observe(el));
-  })();
-
   /* ───────── Прокрутка: один обработчик на кадр ───────── */
   const scrollFns = [];
   let ticking = false;
@@ -109,23 +85,6 @@
     if (doc.fonts && doc.fonts.ready) doc.fonts.ready.then(fit);
     addEventListener('resize', fit);
     addEventListener('load', fit);
-
-    // Заставка: название увеличивается «сквозь» букву I — находим её место и нужный масштаб
-    const introWord = $('.intro__word', hero);
-    if (introWord && html.classList.contains('is-intro')) {
-      const setOrigin = () => {
-        if (performance.now() > 950) return;          // увеличение уже началось — размеры искажены
-        const t = introWord.firstChild, r = doc.createRange(), i = t.nodeValue.indexOf('I');
-        r.setStart(t, i); r.setEnd(t, i + 1);
-        const g = r.getBoundingClientRect(), w = introWord.getBoundingClientRect();
-        if (!g.width || !w.width) return;
-        introWord.style.setProperty('--ox', (((g.left + g.width / 2 - w.left) / w.width) * 100).toFixed(2) + '%');
-        introWord.style.setProperty('--zoom', String(Math.ceil((Math.max(innerWidth, innerHeight) / (g.width * 0.25)) * 1.6)));
-      };
-      setOrigin();
-      if (doc.fonts && doc.fonts.ready) doc.fonts.ready.then(setOrigin);
-      setTimeout(() => html.classList.remove('is-intro'), 3800);
-    }
 
     // Фильм: кадр сменяется, когда заполнилась его полоска. Кадры после первого
     // подгружаются уже после загрузки страницы, на телефоне — облегчённые вертикальные.

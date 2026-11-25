@@ -124,12 +124,11 @@ h2 + .lead, h2 + p { margin-top: clamp(16px, 2vw, 26px); }
 .is-intro:not(.is-fonts) .hero__title { opacity: 0; }
 .is-intro .hero__word { color: transparent; background: linear-gradient(90deg, #fff calc(var(--p, 0) * 108% - 4%), rgba(255, 255, 255, .15) calc(var(--p, 0) * 108% + 4%)); -webkit-background-clip: text; background-clip: text; }
 /* пока идёт заставка, остальное на первом экране спрятано; потом поднимается по очереди */
-.is-intro .hero .hdr, .is-intro .hero__eyebrow, .is-intro .hero__row, .is-intro .hero__panel, .is-intro .reelnav { opacity: 0; animation: none; }
+.is-intro .hero .hdr, .is-intro .hero__eyebrow, .is-intro .hero__row, .is-intro .reelnav { opacity: 0; animation: none; }
 .is-intro .hero__body, .is-enter .hero__body { animation: none; }
 .is-enter .hero .hdr { animation: up .9s var(--e) both; }
 .is-enter .hero__eyebrow { animation: up .9s var(--e) .06s both; }
 .is-enter .hero__row { animation: up .9s var(--e) .14s both; }
-.is-enter .hero__panel { animation: up .9s var(--e) .22s both; }
 .is-enter .reelnav { animation: up .9s var(--e) .32s both; }
 /* край следующего листа, наезжающий на первый экран, во время заставки не виден */
 .is-intro .hero + .sheet { opacity: 0; }
@@ -148,20 +147,20 @@ h2 + .lead, h2 + p { margin-top: clamp(16px, 2vw, 26px); }
 /* 5,48 em — ширина слова CHARISMATA в шрифте Forum: 18,2cqw растягивает его на всю ширину; скрипт уточняет размер */
 .hero__title { margin-top: clamp(6px, 1.2vh, 14px); font: 400 16vw/.84 var(--f-logo); font-size: 18.2cqw; letter-spacing: .012em; white-space: nowrap; color: #fff; text-shadow: 0 2px 44px rgba(10, 16, 22, .36); }
 .hero__word { display: inline-block; }
-.hero__row { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px 40px; margin-top: clamp(14px, 2.6vh, 30px); }
+.hero__row { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px 40px; margin-top: clamp(14px, 2.6vh, 30px); }
+.hero__words { min-width: 0; padding-bottom: 6px; }
 .hero__tag { max-width: 15em; font-size: clamp(1.7rem, 3vw, 2.8rem); font-weight: 400; letter-spacing: -.035em; line-height: 1.04; text-wrap: balance; }
-.hero__frame { display: flex; align-items: baseline; gap: 8px; padding-bottom: 4px; font-size: 1rem; line-height: 1.2; color: rgba(255, 255, 255, .78); white-space: nowrap; }
-.hero__frame b { font: 400 2rem/1 var(--f-logo); color: #fff; }
-.hero__frame i { margin-right: 12px; font-style: normal; }
-/* панель как у сайтов отелей: полупрозрачное тёмное стекло, четыре факта и кнопка */
-.hero__panel { display: flex; align-items: center; gap: clamp(16px, 2.4vw, 40px); margin-top: clamp(18px, 3vh, 30px); padding: 12px 12px 12px clamp(20px, 2.6vw, 38px); border: 1px solid rgba(255, 255, 255, .24); border-radius: 34px; background: rgba(18, 22, 24, .5); }
+/* эмоциональное продолжение слогана — тем же голосом, но тише */
+.hero__more { margin-top: clamp(10px, 1.4vh, 16px); font-size: clamp(1.125rem, 1.6vw, 1.45rem); line-height: 1.3; letter-spacing: -.015em; color: rgba(255, 255, 255, .8); }
+/* плашка: полупрозрачное тёмное стекло — даты, кнопка и под ней условие участия */
+.hero__panel { flex: none; display: grid; gap: 12px; width: min(100%, 372px); padding: 16px 12px 14px; border: 1px solid rgba(255, 255, 255, .24); border-radius: 32px; background: rgba(18, 22, 24, .5); }
 @supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
   .hero__panel { background: rgba(18, 22, 24, .34); -webkit-backdrop-filter: blur(22px) saturate(1.3); backdrop-filter: blur(22px) saturate(1.3); }
 }
-.hero__facts { flex: 1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px clamp(14px, 2vw, 36px); }
-.hero__facts dt { font-size: .9375rem; line-height: 1.3; color: rgba(255, 255, 255, .66); }
-.hero__facts dd { margin-top: 3px; font-size: clamp(1.0625rem, 1.4vw, 1.35rem); font-weight: 500; line-height: 1.2; letter-spacing: -.015em; white-space: nowrap; }
-.hero__cta { flex: none; gap: 16px; height: 66px; padding: 0 11px 0 30px; font-size: 1.125rem; }
+.hero__when { padding: 0 10px; font-size: clamp(1.0625rem, 1.3vw, 1.1875rem); font-weight: 500; line-height: 1.25; letter-spacing: -.015em; white-space: nowrap; }
+.hero__when span { margin-inline: 4px; color: rgba(255, 255, 255, .6); }
+.hero__cta { justify-content: space-between; gap: 16px; height: 62px; padding: 0 9px 0 26px; font-size: 1.125rem; }
+.hero__note { padding: 0 10px; font-size: .875rem; line-height: 1.35; color: rgba(255, 255, 255, .72); }
 .hero__cta i { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--ink); color: #fff; transition: transform .35s var(--e); }
 .hero__cta:hover { transform: none; }
 .hero__cta:hover i { transform: translateX(4px); }
@@ -183,6 +182,7 @@ h2 + .lead, h2 + p { margin-top: clamp(16px, 2vw, 26px); }
 .head { margin-bottom: clamp(28px, 4vw, 56px); }
 .head--wide { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(20px, 5vw, 90px); align-items: start; }
 .head--wide > div > p:not(.lead) { max-width: 34em; }
+.head--wide > div > p + p { margin-top: 12px; }
 .head__sub { margin-top: 14px; max-width: 30em; color: var(--muted); }
 .sub { margin: clamp(44px, 6vw, 84px) 0 clamp(18px, 2.2vw, 28px); font-size: clamp(1.4rem, 2.2vw, 1.9rem); letter-spacing: -.02em; }
 
@@ -194,9 +194,6 @@ h2 + .lead, h2 + p { margin-top: clamp(16px, 2vw, 26px); }
 .about__photos img:first-child { aspect-ratio: 4 / 5; border-radius: 30px; }
 .about__photos img:last-child { position: absolute; left: 0; bottom: 0; width: 46%; aspect-ratio: 4 / 5; border: 8px solid #fff; border-radius: 26px; }
 .about p { max-width: 34em; }
-.facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(22px, 3vw, 44px) 24px; padding-top: 8px; }
-.facts dt { font-size: 1rem; color: var(--muted); }
-.facts dd { margin-top: 4px; font-size: clamp(1.25rem, 1.9vw, 1.75rem); font-weight: 500; line-height: 1.2; letter-spacing: -.02em; color: var(--ink); }
 
 /* Кому подходит; анкета */
 .split { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(24px, 6vw, 110px); align-items: start; }
@@ -204,15 +201,14 @@ h2 + .lead, h2 + p { margin-top: clamp(16px, 2vw, 26px); }
 .reader { display: flex; align-items: center; gap: 16px; max-width: 30em; margin-top: clamp(20px, 2.6vw, 32px); }
 .reader img { flex: none; width: 64px; height: 64px; border-radius: 50%; object-fit: cover; }
 
-/* Кому подходит: тёмный раздел, утверждения крупным текстом — начало фразы белым, продолжение приглушено */
 .sheet--ink .lead { color: rgba(255, 255, 255, .86); }
-.whom { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(24px, 6vw, 110px); align-items: start; }
-.whom__head { position: sticky; top: 40px; }
-.whom__list { display: grid; gap: clamp(22px, 3vw, 40px); padding-top: 6px; }
-.whom__list li { font-size: clamp(1.4rem, 2.5vw, 2.2rem); font-weight: 400; line-height: 1.2; letter-spacing: -.03em; color: rgba(255, 255, 255, .46); text-wrap: pretty; }
-.whom__list b { font-weight: 400; color: #fff; }
-#for { background: #111315; }
-.whom__cta { margin-top: clamp(24px, 3vw, 40px); }
+/* Для кого: восемь жизненных состояний — номер шрифтом Forum, название и описание; разделены тонкими линиями */
+.states__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: clamp(28px, 4vw, 56px); }
+.states { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 clamp(24px, 5vw, 90px); counter-reset: st; }
+.states li { display: grid; grid-template-columns: clamp(44px, 4vw, 60px) minmax(0, 1fr); align-content: start; padding-block: clamp(22px, 2.4vw, 32px) clamp(26px, 3vw, 40px); border-top: 1px solid var(--line); counter-increment: st; }
+.states li::before { content: counter(st, decimal-leading-zero); grid-row: 1 / span 2; padding-top: 3px; font: 400 clamp(1.5rem, 1.9vw, 1.8rem)/1 var(--f-logo); color: var(--muted); }
+.states h3 { font-size: clamp(1.25rem, 1.7vw, 1.55rem); letter-spacing: -.02em; line-height: 1.22; color: var(--ink); text-wrap: balance; }
+.states p { margin-top: 10px; max-width: 34em; font-size: 1.0625rem; line-height: 1.55; }
 
 /* Марина: тёмный раздел, фон совпадает с фоном портрета — снимок растворяется в странице */
 #marina { padding-block: clamp(40px, 6vw, 84px) 36px; overflow: hidden; background: #111315; color: rgba(255, 255, 255, .76); }
@@ -226,9 +222,10 @@ h2 + .lead, h2 + p { margin-top: clamp(16px, 2vw, 26px); }
 .marina__text { align-self: center; padding-block: clamp(10px, 3vw, 40px) clamp(48px, 8vw, 110px); }
 .marina__text .lead { max-width: 22em; }
 .marina__text > p:not(.lead) { max-width: 32em; }
-.stats { display: grid; grid-template-columns: repeat(3, minmax(0, auto)); justify-content: start; gap: 16px clamp(24px, 4vw, 64px); margin-top: clamp(28px, 4vw, 56px); }
-.stats dd { font: 400 clamp(2rem, 4vw, 3.9rem)/1 var(--f-logo); letter-spacing: -.01em; color: #fff; white-space: nowrap; }
-.stats dt { margin-top: 10px; max-width: 10em; font-size: 1rem; line-height: 1.35; color: rgba(255, 255, 255, .58); }
+.marina__role { margin-top: 10px; max-width: 32em; font-size: 1rem; line-height: 1.45; color: rgba(255, 255, 255, .6); }
+#marina h2 + .marina__role + .lead { margin-top: clamp(18px, 2.2vw, 28px); }
+.marina__text b { font-weight: 500; color: #fff; }
+.marina__key { margin-top: clamp(22px, 2.6vw, 34px) !important; font-size: clamp(1.2rem, 1.6vw, 1.45rem); line-height: 1.35; letter-spacing: -.015em; color: #fff; }
 
 /* Видео: большой кадр слева, справа — список выпусков и раскрывающийся блок */
 .listen { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(16px, 2.6vw, 40px); align-items: start; }
@@ -255,20 +252,26 @@ h2 + .lead, h2 + p { margin-top: clamp(16px, 2vw, 26px); }
 .more summary::after { content: ""; flex: none; width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(#fff, #fff) center / 16px 2px no-repeat, linear-gradient(#fff, #fff) center / 2px 16px no-repeat, var(--ink); transition: transform .3s var(--e); }
 .more[open] summary::after { transform: rotate(45deg); }
 .more__in { max-width: 48em; padding: 0 clamp(20px, 2.4vw, 32px) clamp(22px, 2.4vw, 32px); }
+/* о команде — в конце раздела о Марине, отдельным спокойным абзацем */
+.team { max-width: 38em; margin-top: clamp(40px, 5.6vw, 84px); padding-top: clamp(24px, 3vw, 40px); border-top: 1px solid var(--line); font-size: clamp(1.2rem, 1.8vw, 1.6rem); line-height: 1.4; letter-spacing: -.02em; color: var(--ink); text-wrap: pretty; }
 
-/* Метод: слева заголовок, переключатель «уровни / этапы» и короткий нумерованный список, справа — зал для практик */
+/* Три уровня: строки во всю ширину — слева номер и название, справа описание и что даёт эта работа */
+.levels { border-top: 1px solid var(--line); }
+.levels li { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 14px clamp(24px, 5vw, 90px); padding-block: clamp(26px, 3.4vw, 48px); border-bottom: 1px solid var(--line); }
+.levels__name { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: baseline; align-content: start; column-gap: clamp(16px, 2vw, 28px); }
+.levels__name span { grid-row: 1 / span 2; font: 400 clamp(2.4rem, 4vw, 3.8rem)/1 var(--f-logo); color: var(--ink); }
+.levels h3 { font-size: clamp(1.6rem, 2.6vw, 2.4rem); font-weight: 400; letter-spacing: -.035em; line-height: 1.1; color: var(--ink); }
+.levels small { grid-column: 2; display: block; margin-top: 6px; font-size: 1rem; color: var(--muted); }
+.levels__text p { max-width: 36em; font-size: 1.0625rem; line-height: 1.55; }
+.levels__text p + p { margin-top: 12px; color: var(--ink); }
+
+/* Путь CHARISMATA: слева заголовок, вводные строки и четыре этапа, справа — групповая практика; ниже лента дней */
 .method { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: clamp(28px, 6vw, 110px); align-items: start; }
 .method__photo { position: sticky; top: 40px; overflow: hidden; border-radius: 30px; aspect-ratio: 4 / 5; background: var(--soft); }
 .method__photo img { width: 100%; height: 100%; object-fit: cover; object-position: 38% 50%; }
-.method .tabs { margin-top: clamp(28px, 3.6vw, 48px); }
-.tabs__bar { display: inline-flex; gap: 4px; padding: 5px; border-radius: 999px; background: #fff; }
-.tabs__bar button { height: 48px; padding: 0 24px; border: 0; border-radius: 999px; background: transparent; color: var(--ink); font-size: 1.0625rem; font-weight: 500; white-space: nowrap; transition: background .25s, color .25s; }
-.tabs__bar button:hover { background: var(--soft); }
-.tabs__bar button[aria-selected="true"] { background: var(--ink); color: #fff; }
-.tabs__panel { margin-top: clamp(24px, 3vw, 40px); }
-.js .tabs__panel:not([hidden]) { animation: up .45s var(--e) both; }
-.tabs__panel + .tabs__panel { margin-top: clamp(32px, 4vw, 56px); }
-.js .tabs__panel + .tabs__panel { margin-top: clamp(24px, 3vw, 40px); }
+.method__days { margin-top: clamp(14px, 1.6vw, 20px); font-size: clamp(1.125rem, 1.4vw, 1.3rem); font-weight: 500; letter-spacing: -.015em; color: var(--ink); }
+.method__about { max-width: 34em; margin-top: 10px; }
+.method__sub { margin: clamp(32px, 4vw, 52px) 0 clamp(18px, 2.2vw, 26px); font-size: clamp(1.3rem, 1.9vw, 1.7rem); letter-spacing: -.02em; }
 /* строки списка: цифра шрифтом Forum, справа название, подпись и пояснение */
 .steps { display: grid; gap: clamp(20px, 2.2vw, 30px); counter-reset: s; }
 .steps li { display: grid; grid-template-columns: clamp(44px, 4.6vw, 66px) minmax(0, 1fr); align-items: start; counter-increment: s; }
@@ -277,8 +280,6 @@ h2 + .lead, h2 + p { margin-top: clamp(16px, 2vw, 26px); }
 .steps h3 { padding-top: 7px; font-size: clamp(1.25rem, 1.7vw, 1.55rem); letter-spacing: -.02em; line-height: 1.2; }
 .steps small { display: block; margin-top: 4px; font-size: .9375rem; color: var(--muted); }
 .steps p { margin-top: 8px; max-width: 30em; font-size: 1.0625rem; line-height: 1.5; }
-.steps p + p { margin-top: 10px; color: var(--muted); }
-.method__note { max-width: 34em; margin-top: clamp(28px, 4vw, 48px); font-size: 1.0625rem; color: var(--muted); }
 .flow { --g: clamp(18px, 2.6vw, 40px); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--g); counter-reset: s; }
 .flow li { position: relative; counter-increment: s; }
 .flow li::before { content: counter(s); display: block; height: 48px; margin-bottom: 14px; font: 400 2.9rem/48px var(--f-logo); color: var(--ink); }
@@ -288,6 +289,8 @@ h2 + .lead, h2 + p { margin-top: clamp(16px, 2vw, 26px); }
 
 /* Дни: лента крупных кадров, дата и название — на фотографии; под лентой — линия прокрутки */
 .days__head { display: flex; align-items: end; justify-content: space-between; gap: 24px; }
+#program .days__head { margin-top: clamp(56px, 7.6vw, 120px); }
+.days__title { font-size: clamp(1.6rem, 2.8vw, 2.5rem); font-weight: 400; letter-spacing: -.035em; line-height: 1.1; }
 .days__nav { display: flex; gap: 10px; }
 .days__nav button { display: grid; place-items: center; width: 56px; height: 56px; border: 0; border-radius: 50%; background: var(--ink); color: #fff; transition: transform .2s var(--e), opacity .2s; }
 .days__nav button:hover { transform: scale(1.08); }
@@ -312,13 +315,20 @@ h2 + .lead, h2 + p { margin-top: clamp(16px, 2vw, 26px); }
 .days__bar { display: none; position: relative; height: 2px; margin-top: clamp(22px, 2.6vw, 36px); border-radius: 2px; background: var(--line); overflow: hidden; }
 .js .days__bar { display: block; }
 .days__bar i { position: absolute; left: 0; top: 0; width: 40%; height: 100%; border-radius: 2px; background: var(--ink); }
-/* Что дополняет работу: слева подпись, справа практики одной крупной строкой через косую черту */
-.extras { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: clamp(18px, 5vw, 90px); align-items: start; margin-top: clamp(48px, 6.4vw, 100px); }
-.extras h3 { font-size: clamp(1.4rem, 2.2vw, 1.9rem); letter-spacing: -.02em; }
-.extras__head p { margin-top: 12px; max-width: 22em; font-size: 1.0625rem; color: var(--muted); }
-.extras__list { font-size: clamp(1.45rem, 2.7vw, 2.4rem); font-weight: 400; line-height: 1.22; letter-spacing: -.035em; color: var(--ink); text-wrap: pretty; }
-.extras__list li { display: inline; }
-.extras__list li:not(:last-child)::after { content: "\00a0/"; color: #c2bdb0; }
+/* Что может измениться: тёмный спокойный раздел, мысль о «поле жизни» выделена, последняя фраза — крупно */
+#change { background: #111315; }
+.change { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(24px, 6vw, 110px); align-items: start; }
+.change h2 { text-wrap: balance; }
+.change__text p { max-width: 34em; }
+.change__text p + p { margin-top: 14px; }
+.change__text p.change__field { margin-block: clamp(22px, 2.6vw, 32px); font-size: clamp(1.3rem, 2vw, 1.75rem); line-height: 1.3; letter-spacing: -.02em; color: #fff; }
+.change__big { grid-column: 1 / -1; max-width: 24em; margin-top: clamp(24px, 3vw, 48px); padding-top: clamp(32px, 4.4vw, 64px); border-top: 1px solid rgba(255, 255, 255, .16); font: 400 clamp(2rem, 4.2vw, 3.9rem)/1.12 var(--f-logo); color: #fff; text-wrap: balance; }
+
+/* Дополнительные практики: отдельный блок — слева заголовок, справа список крупными строками */
+.practices { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(24px, 6vw, 110px); align-items: start; }
+.practices__head p { margin-top: 14px; max-width: 22em; font-size: 1.0625rem; color: var(--muted); }
+.practices__list { border-top: 1px solid rgba(20, 20, 18, .16); }
+.practices__list li { padding-block: clamp(14px, 1.6vw, 20px); border-bottom: 1px solid rgba(20, 20, 18, .16); font-size: clamp(1.35rem, 2.4vw, 2.15rem); font-weight: 400; line-height: 1.15; letter-spacing: -.03em; color: var(--ink); }
 
 /* Место: мозаика в три ряда — высокий кадр слева, в последнем ряду тёмная плитка «Питание» */
 .place { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 16px; }
@@ -328,13 +338,13 @@ h2 + .lead, h2 + p { margin-top: clamp(16px, 2vw, 26px); }
 .mosaic figure:nth-child(2) { grid-column: span 7; aspect-ratio: 7 / 4; }
 .mosaic figure:nth-child(3) { grid-column: span 3; }
 .mosaic figure:nth-child(4) { grid-column: span 4; aspect-ratio: 4 / 3; }
-.mosaic figure:nth-child(5) { grid-column: span 7; aspect-ratio: 7 / 4; }
+.mosaic figure:nth-child(5) { grid-column: span 7; min-height: clamp(260px, 30vw, 440px); }   /* по высоте — как плитка «Питание» рядом */
 .mosaic img, .circle img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .mosaic figcaption { bottom: 14px; }
 .food { grid-column: span 5; display: flex; flex-direction: column; justify-content: space-between; gap: 28px; padding: clamp(24px, 2.8vw, 40px); border-radius: 30px; background: #111315; color: rgba(255, 255, 255, .78); }
-.food h3 { font-size: clamp(1.9rem, 3.2vw, 3rem); font-weight: 400; letter-spacing: -.035em; color: #fff; }
-.food p { margin: 0; max-width: 24em; font-size: 1.0625rem; line-height: 1.55; }
-.food p + p { margin-top: 12px; }
+.food h3 { font-size: clamp(1.6rem, 2.5vw, 2.3rem); font-weight: 400; letter-spacing: -.035em; line-height: 1.1; color: #fff; text-wrap: balance; }
+.food p { margin: 0; max-width: 30em; font-size: 1rem; line-height: 1.5; }
+.food p + p { margin-top: 10px; }
 
 /* Кто будет рядом */
 .circle { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(24px, 6vw, 100px); align-items: start; }
@@ -506,19 +516,17 @@ h2 + .lead, h2 + p { margin-top: clamp(16px, 2vw, 26px); }
 @media (max-width: 900px) {
   .sheet { border-radius: 28px 28px 0 0; margin-top: -28px; padding-bottom: calc(var(--gap) + 28px); }
   .finale { padding-bottom: 14px; }
-  .about, .split, .whom, .marina, .circle, .head--wide, .method, .extras { grid-template-columns: minmax(0, 1fr); }
+  .about, .split, .marina, .circle, .head--wide, .method, .change, .practices, .levels li { grid-template-columns: minmax(0, 1fr); }
   .about__photos { width: min(100%, 30rem); }
-  .split__head, .whom__head { position: static; }
+  .split__head { position: static; }
   /* на узких экранах внизу всегда видна плавающая кнопка заявки — вторая рядом не нужна */
-  .whom__cta { display: none; }
+  .states__cta { display: none; }
   .circle figure { position: relative; top: auto; }
   .method__photo { position: relative; top: auto; aspect-ratio: 4 / 3.2; }
   .method__photo img { object-position: 50% 50%; }
   #marina { padding-bottom: 28px; }
   .marina figure { width: min(100%, 26rem); margin-inline: auto; aspect-ratio: 4 / 5; }
   .marina__text { padding-block: 0 clamp(28px, 7vw, 56px); }
-  .stats { gap: 14px 20px; }
-  .stats dt { font-size: .9375rem; }
   .listen { grid-template-columns: minmax(0, 1fr); gap: 12px; }
   .video__thumb, .video__frame { border-radius: 24px; }
   .video__play { scale: .8; }
@@ -533,7 +541,7 @@ h2 + .lead, h2 + p { margin-top: clamp(16px, 2vw, 26px); }
   .place { display: block; }
   .mosaic { display: flex; margin-inline: calc(var(--pad) * -1); padding-inline: var(--pad); overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--pad); scrollbar-width: none; }
   .mosaic::-webkit-scrollbar { display: none; }
-  .mosaic figure:nth-child(n) { flex: 0 0 82vw; aspect-ratio: 4 / 3; scroll-snap-align: start; }
+  .mosaic figure:nth-child(n) { flex: 0 0 82vw; min-height: 0; aspect-ratio: 4 / 3; scroll-snap-align: start; }
   .food { margin-top: 14px; gap: 18px; }
   .circle figure { aspect-ratio: 4 / 3.4; }
 }
@@ -545,19 +553,16 @@ h2 + .lead, h2 + p { margin-top: clamp(16px, 2vw, 26px); }
   .hero__eyebrow { max-width: 17em; font-size: .9375rem; line-height: 1.3; text-wrap: balance; }
   .hero__title { margin-top: 12px; }
   .hero__row { display: block; margin-top: 14px; }
-  .hero__frame { display: none; }
+  .hero__words { padding-bottom: 0; }
   .hero__tag { font-size: clamp(1.6rem, 7.2vw, 2rem); }
-  /* панель фактов на телефоне: два столбца и кнопка во всю ширину */
-  .hero__panel { flex-direction: column; align-items: stretch; gap: 14px; margin-top: 16px; padding: 16px; border-radius: 26px; }
-  .hero__facts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 14px; }
-  .hero__facts dd { font-size: 1.0625rem; white-space: normal; }
-  .hero__cta { justify-content: space-between; height: 58px; padding: 0 8px 0 24px; }
+  .hero__more { margin-top: 8px; font-size: 1.0625rem; }
+  /* плашка на телефоне — во всю ширину */
+  .hero__panel { width: 100%; margin-top: 16px; padding: 14px 10px 12px; border-radius: 26px; }
+  .hero__cta { height: 58px; padding: 0 8px 0 24px; }
   .reelnav { gap: 8px; margin-block: 12px calc(28px + 8px); }
-  .tabs__bar { display: flex; }
-  .tabs__bar button { flex: 1; padding: 0 12px; font-size: 1rem; }
   .reelnav button { height: 28px; padding: 0; font-size: 0; }
   .reelnav button::before, .reelnav i { top: 12px; height: 3px; border-radius: 3px; }
-  .facts { gap: 20px 16px; }
+  .states { grid-template-columns: minmax(0, 1fr); }
   .rules { grid-template-columns: minmax(0, 1fr); }
   .days__head { flex-wrap: wrap; }
   .offer { gap: 28px; }
@@ -569,10 +574,6 @@ h2 + .lead, h2 + p { margin-top: clamp(16px, 2vw, 26px); }
   .offer__prices dt small { max-width: none; }
   .offer__prices dd { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; margin-top: 10px; text-align: left; }
   .offer__prices dd small { max-width: none; margin: 0; }
-  /* практики — списком, по одной в строке */
-  .extras__list li { display: block; }
-  .extras__list li + li { margin-top: 6px; }
-  .extras__list li:not(:last-child)::after { content: none; }
   .offer__cta { height: 58px; padding: 0 8px 0 24px; }
   .ftr__nav { gap: 10px 20px; }
   .btn--lg { width: 100%; }
@@ -588,11 +589,6 @@ h2 + .lead, h2 + p { margin-top: clamp(16px, 2vw, 26px); }
   .dock__text em, .dock__text span { display: none; }
   .dock__btn { height: 48px; padding: 0 22px; font-size: 1rem; }
   .dock__btn i { display: none; }
-}
-
-/* невысокие экраны ноутбуков: слоган и номер кадра уступают место панели */
-@media (min-width: 701px) and (max-height: 700px) {
-  .hero__row { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {

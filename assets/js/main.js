@@ -44,7 +44,7 @@
      Скрипт сам размечает блоки и ставит класс rv-on; если он не загрузился, ничего не прячется. */
   (() => {
     if (reduce || !('IntersectionObserver' in window)) return;
-    const BLOCKS = '.sheet h2, .sheet .lead, .head__sub, .about p:not(.lead), .facts > div, .marina__text > p:not(.lead), .stats > div, .listen__stage, .playlist li, .more, .tabs, .method__note, .day, .extras__head, .extras__list, .food, .circle p:not(.lead), .rules > div, .whom__list li, .sub, .offer__head > p:not(.lead), .offer__panel, .flow li, .join__note, .split__head > p:not(.lead), .formbox, .ftr__panel';
+    const BLOCKS = '.sheet h2, .sheet .lead, .head__sub, .about p:not(.lead), .states li, .marina__text > p:not(.lead), .listen__stage, .playlist li, .more, .team, .levels li, .method__text > p:not(.lead), .method__sub, .steps li, .days__title, .day, .change__text p:not(.lead), .change__big, .practices__head p, .practices__list li, .head--wide > div > p:not(.lead), .food, .circle p:not(.lead), .rules > div, .sub, .offer__head > p:not(.lead), .offer__panel, .flow li, .join__note, .split__head > p:not(.lead), .formbox, .ftr__panel';
     $$(BLOCKS).forEach(el => { if (!el.closest('[data-rv]')) el.setAttribute('data-rv', ''); });
     // соседние блоки появляются по очереди
     $$('[data-rv]').forEach(el => {
@@ -431,6 +431,8 @@
     const KEY = 'charismata-form', UKEY = 'charismata-utm';
     let step = 0, started = false, sending = false;
     const PREVIEW = /\.github\.io$/i.test(location.hostname);
+    // на своём компьютере анкета уходит на заглушку локального сервера, а не в Web3Forms
+    const LOCAL = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
     const store = {
       get(k) { try { return JSON.parse(sessionStorage.getItem(k) || '{}') || {}; } catch (e) { return {}; } },
       set(k, v) { try { sessionStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* хранилище недоступно */ } },
@@ -453,7 +455,7 @@
     Object.keys(saved).forEach(k => { const el = form.elements[k]; if (el && 'value' in el) el.value = saved[k]; });
     const save = () => {
       const o = {};
-      new FormData(form).forEach((v, k) => { if (!/^(consent|website|page|referrer|started_at|utm_)/.test(k)) o[k] = v; });
+      new FormData(form).forEach((v, k) => { if (!/^(consent|website|page|referrer|started_at|utm_|access_key|subject|from_name)/.test(k)) o[k] = v; });
       store.set(KEY, o);
     };
     form.addEventListener('input', () => {
@@ -537,14 +539,49 @@
           note.textContent = 'Это предпросмотр сайта: анкета никуда не отправлена.';
           done.appendChild(note);
         } else {
-          const res = await fetch(form.getAttribute('action'), {
-            method: 'POST',
-            headers: { 'Accept': 'application/json', 'X-Requested-With': 'fetch' },
-            body: new URLSearchParams(new FormData(form))
-          });
-          let data = null;
-          try { data = await res.json(); } catch (_) { /* не JSON */ }
-          if (!res.ok || !data || !data.ok) throw new Error((data && data.message) || '');
+          // Анкета уходит Марине письмом через Web3Forms: поля подписаны по-русски,
+          // «Ответить» в письме сразу идёт кандидату.
+          const fd = new FormData(form);
+          const g = k => String(fd.get(k) || '').trim();
+          // ловушка для ботов: скрытое поле заполнено или анкета заполнена быстрее 3 секунд — молча «принимаем»
+          const bot = g('website') !== '' || (+g('started_at') > 0 && Date.now() - +g('started_at') < 3000);
+          if (!bot) {
+            if (!g('access_key') && !LOCAL) throw new Error('');      // ключ Web3Forms ещё не вписан в форму
+            const utm = ['source', 'medium', 'campaign', 'content', 'term']
+              .map(k => g('utm_' + k) && k + ': ' + g('utm_' + k)).filter(Boolean).join(', ');
+            const rows = {
+              'Имя и фамилия': g('name'),
+              'Email': g('email'),
+              'Телефон / мессенджер': g('phone'),
+              'Город и страна': g('city'),
+              'О себе': g('about'),
+              'Жизненный этап': g('stage'),
+              'Что привело и чего ждёт': g('motivation'),
+              'Размещение': g('accommodation'),
+              'Питание': g('diet'),
+              'Аллергии и ограничения': g('allergies'),
+              'Откуда узнал(а)': g('source'),
+              'Кто рекомендовал': g('recommender'),
+              'Где заполнена анкета': g('page') === 'apply' ? 'Страница анкеты' : 'Главная страница',
+              'UTM-метки': utm,
+              'Переход с сайта': g('referrer')
+            };
+            Object.keys(rows).forEach(k => { if (!rows[k]) rows[k] = '—'; });
+            const payload = Object.assign({
+              access_key: g('access_key'),
+              subject: 'Новая анкета CHARISMATA — ' + g('name'),
+              from_name: 'CHARISMATA',
+              replyto: g('email')
+            }, rows);
+            const res = await fetch(LOCAL ? '/__form' : form.getAttribute('action'), {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+            let data = null;
+            try { data = await res.json(); } catch (_) { /* не JSON */ }
+            if (!res.ok || !data || data.success !== true) throw new Error('');
+          }
         }
 
         track('form_submit');

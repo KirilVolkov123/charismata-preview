@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Forum&family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=2715613158">
+<link rel="stylesheet" href="assets/css/style.css?v=4159655762">
 </head>
 <body class="page-apply">
 <!-- та же вечерняя сцена, что в финале главной страницы -->
@@ -30,11 +30,11 @@
     <div class="split__head">
       <h1>Анкета участника</h1>
       <p class="lead">Девять коротких вопросов, около пяти минут.</p>
-      <p class="reader"><img src="assets/img/marina-face.webp" width="88" height="88" alt=""><span>Анкету читает Марина. Ответы видят только она и организаторы программы.</span></p>
+      <p class="reader"><img src="assets/img/marina-smile-face.webp" width="88" height="88" alt=""><span>Анкету читает Марина. Ответы видят только она и организаторы программы.</span></p>
       <p class="apply__facts">18–24 апреля 2027 года, Португалия. Группа до 25 человек.</p>
     </div>
     <div class="formbox formbox--glass">
-      <form class="form" id="apply-form" action="send.php" method="post" novalidate>
+      <form class="form" id="apply-form" action="https://api.web3forms.com/submit" method="post" novalidate>
         <div class="form__top">
           <p class="form__count">Вопрос <b data-step-now>1</b> из <span data-step-total>9</span></p>
           <div class="form__bar" aria-hidden="true"><i></i></div>
@@ -155,6 +155,10 @@
         <div class="hp" aria-hidden="true">
           <label>Не заполняйте это поле <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
         </div>
+        <!-- анкета уходит Марине письмом через Web3Forms; ключ формы публичный — он только указывает, на какую почту слать -->
+        <input type="hidden" name="access_key" value="">
+        <input type="hidden" name="subject" value="Новая анкета CHARISMATA">
+        <input type="hidden" name="from_name" value="CHARISMATA">
         <input type="hidden" name="page" value="apply">
         <input type="hidden" name="utm_source"><input type="hidden" name="utm_medium"><input type="hidden" name="utm_campaign"><input type="hidden" name="utm_content"><input type="hidden" name="utm_term"><input type="hidden" name="referrer"><input type="hidden" name="started_at">
 
@@ -192,6 +196,6 @@
   </footer>
 </div>
 
-<script src="assets/js/main.js?v=4279627823" defer></script>
+<script src="assets/js/main.js?v=3550124440" defer></script>
 </body>
 </html>

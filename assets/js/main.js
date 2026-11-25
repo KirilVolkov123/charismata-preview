@@ -108,8 +108,81 @@
     addEventListener('resize', fit);
     addEventListener('load', fit);
 
-    // Заставка-шторка длится меньше секунды; после неё класс больше не нужен
-    if (html.classList.contains('is-intro')) setTimeout(() => html.classList.remove('is-intro'), 2400);
+    const isReady = img => img.complete && img.naturalWidth > 0;
+
+    // Заставка (один раз за посещение, класс is-intro ставит скрипт в <head>).
+    // Счётчик и свет в названии идут по реальной загрузке: шрифт, кадры окна, первый кадр фильма
+    // и начало видео. Пока грузится — в окне по очереди мелькают кадры усадьбы; на 100 окно
+    // показывает первый кадр фильма и раскрывается на весь экран, после чего поднимается остальное.
+    const runIntro = waitFor => new Promise(done => {
+      if (!html.classList.contains('is-intro')) { done(); return; }
+      const intro = $('.intro', hero), win = $('.intro__win', hero), ui = $('.intro__ui', hero);
+      const count = $('[data-intro-count]', hero);
+      const pics = $$('img', win), last = pics[pics.length - 1], cycle = pics.slice(0, -1);
+      const MIN = 1300, MAX = 6000, STEP = 260;
+      const t0 = performance.now();
+      // окно — за названием: по центру по горизонтали, по высоте — на середине названия,
+      // но не выше края экрана и не ниже строки со счётчиком; пропорции 4:5
+      const place = () => {
+        const hr = hero.getBoundingClientRect(), tr = title.getBoundingClientRect();
+        const uiTop = ui.getBoundingClientRect().top - hr.top;
+        const gap = Math.max(22, hr.height * .045);
+        let h = Math.min(hr.height * .48, uiTop - gap * 2), w = h * .8;
+        const maxW = hr.width * (hr.width <= 700 ? .62 : .3);
+        if (w > maxW) { w = maxW; h = w / .8; }
+        const mid = (tr.top + tr.bottom) / 2 - hr.top;
+        const top = Math.min(Math.max(gap, mid - h / 2), uiTop - gap - h);
+        win.style.setProperty('--wt', top.toFixed(1) + 'px');
+        win.style.setProperty('--wl', ((hr.width - w) / 2).toFixed(1) + 'px');
+        win.style.setProperty('--ww', w.toFixed(1) + 'px');
+        win.style.setProperty('--wh', h.toFixed(1) + 'px');
+      };
+      place();
+      addEventListener('resize', () => { if (!html.classList.contains('is-open')) place(); });
+      // что ждём: шрифт названия, кадры окна, первый кадр фильма, видео (если есть)
+      const later = ms => new Promise(r => setTimeout(r, ms));
+      const fonts = doc.fonts && doc.fonts.load ? Promise.race([doc.fonts.load('1em Forum'), later(2500)]).catch(() => {}) : Promise.resolve();
+      fonts.then(() => { fit(); place(); html.classList.add('is-fonts'); });
+      const tasks = [fonts, ...pics.map(img => (img.decode ? img.decode() : Promise.resolve()).catch(() => {}))];
+      if (waitFor) tasks.push(waitFor);
+      let ready = 0, all = false;
+      tasks.forEach(t => t.then(() => { ready++; }));
+      Promise.all(tasks).then(() => { all = true; });
+      let shown = 0, k = -1, swap = 0;
+      const show = img => pics.forEach(p => p.classList.toggle('is-on', p === img));
+      const tick = now => {
+        const time = Math.min(1, Math.max(0, now - t0) / MIN);   // время кадра может быть чуть раньше t0
+        if (now - t0 > MAX) all = true;
+        const target = all ? time : Math.min(time, .12 + .78 * ready / tasks.length);
+        shown = Math.max(shown, shown + (target - shown) * .2);   // счётчик только растёт
+        if (target >= 1 && shown > .995) shown = 1;
+        count.textContent = Math.round(shown * 100);
+        word.style.setProperty('--p', shown.toFixed(4));
+        if (shown < 1) {
+          // пока грузится — кадры усадьбы по кругу (только уже загруженные)
+          if (now - swap >= STEP) {
+            const loaded = cycle.filter(isReady);
+            if (loaded.length) { k = (k + 1) % loaded.length; show(loaded[k]); }
+            swap = now;
+          }
+          requestAnimationFrame(tick);
+          return;
+        }
+        // загрузилось: в окне — первый кадр фильма, пауза и раскрытие на весь экран
+        show(last);
+        setTimeout(() => {
+          html.classList.add('is-open');
+          setTimeout(() => {
+            html.classList.add('is-enter');
+            html.classList.remove('is-intro');
+            intro.classList.add('is-gone');
+            setTimeout(() => html.classList.remove('has-intro', 'is-open', 'is-fonts'), 600);
+            done();
+          }, 800);       // остальное начинает подниматься, когда окно почти раскрылось
+        }, 200);
+      };
+      requestAnimationFrame(tick);
+    });
 
     // Номер и название текущего кадра рядом со слоганом
     const frameNow = $('[data-frame-now]', hero), frameCap = $('[data-frame-cap]', hero);
@@ -120,7 +193,6 @@
     const small = matchMedia('(max-width: 700px)').matches;
     const saveData = !!(navigator.connection && navigator.connection.saveData);
     let cur = 0;
-    const isReady = img => img.complete && img.naturalWidth > 0;
     const loadSlide = img => {
       if (!img.dataset.src) return;
       img.src = small && img.dataset.srcM ? img.dataset.srcM : img.dataset.src;
@@ -179,6 +251,7 @@
     // Полоски и подпись кадра следуют за временем видео, клик по полоске перематывает к кадру.
     const video = $('.film__video', hero);
     const SEG = 4;
+    let waitVideo = null, held = html.classList.contains('is-intro'), fail = () => {};
     if (video && !reduce && !saveData) {
       mode = 'video';
       const webm = video.canPlayType('video/webm; codecs="vp9"');
@@ -202,17 +275,25 @@
         raf = requestAnimationFrame(tick);
       };
       video.addEventListener('playing', () => {
+        // идёт заставка — видео уже загрузилось, ждём её конца на первом кадре
+        if (held) { video.pause(); video.currentTime = 0; return; }
         hero.classList.add('is-video');
         cancelAnimationFrame(raf); raf = requestAnimationFrame(tick);
       });
       video.addEventListener('pause', () => cancelAnimationFrame(raf));
-      const fail = () => { if (mode === 'video') { hero.classList.remove('is-video'); video.removeAttribute('src'); startSlides(); } };
+      fail = () => { if (mode === 'video') { hero.classList.remove('is-video'); video.removeAttribute('src'); startSlides(); } };
       video.addEventListener('error', fail);
+      // заставка ждёт, пока видео сможет играть (или откажет)
+      waitVideo = new Promise(r => ['canplay', 'playing', 'error'].forEach(e => video.addEventListener(e, r, { once: true })));
       const p = video.play();
       if (p && p.catch) p.catch(fail);     // автозапуск запрещён (режим энергосбережения и т. п.)
-    } else {
-      startSlides();
     }
+    runIntro(waitVideo).then(() => {
+      held = false;
+      if (mode !== 'video') { startSlides(); return; }
+      const p = video.play();
+      if (p && p.catch) p.catch(fail);
+    });
   }
 
   /* ───────── Переключатель «уровни / этапы» ───────── */

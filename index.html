@@ -16,11 +16,17 @@
 <script>
   (function (d) {
     d.classList.add('js');
-    // заставка первого экрана — один раз за посещение и только если не отключена анимация
+    // заставка первого экрана — один раз за посещение и только если не отключена анимация;
+    // по адресу с ?intro показывается всегда (чтобы посмотреть её ещё раз)
     try {
-      if (!sessionStorage.getItem('charismata-intro') && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        d.classList.add('is-intro');
+      var again = /[?&]intro\b/.test(location.search);
+      if ((again || !location.hash && !sessionStorage.getItem('charismata-intro')) && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        d.classList.add('is-intro', 'has-intro');
         sessionStorage.setItem('charismata-intro', '1');
+        // страховка: если скрипт страницы не загрузился, заставка не держит экран
+        setTimeout(function () {
+          if (d.classList.contains('is-intro')) { d.classList.remove('is-intro', 'has-intro'); d.classList.add('is-enter'); }
+        }, 9000);
       }
     } catch (e) {}
   })(document.documentElement);
@@ -30,7 +36,7 @@
 <link rel="preload" as="image" href="assets/img/est-lane.webp" media="(min-width: 701px)">
 <link rel="preload" as="image" href="assets/img/film-lane-m.webp" media="(max-width: 700px)">
 <link href="https://fonts.googleapis.com/css2?family=Forum&family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=1691001758">
+<link rel="stylesheet" href="assets/css/style.css?v=3160600255">
 </head>
 <body class="has-hero">
 
@@ -85,8 +91,27 @@
     <img data-src="assets/img/est-fire.webp" data-src-m="assets/img/film-fire-m.webp" width="2000" height="1934" style="object-position:50% 70%" alt="Вечер у огня во дворе усадьбы">
   </div>
 
-  <!-- заставка: тёмная шторка, которая быстро уходит вверх -->
-  <div class="intro" aria-hidden="true"></div>
+  <!-- заставка (один раз за посещение): в окне мелькают кадры усадьбы, название наполняется светом
+       по мере загрузки, затем окно раскрывается на весь экран и становится первым кадром фильма -->
+  <div class="intro" aria-hidden="true">
+    <div class="intro__win">
+      <img data-src="assets/img/intro-deck.webp" width="480" height="600" alt="">
+      <img data-src="assets/img/intro-house.webp" width="480" height="600" alt="">
+      <img data-src="assets/img/intro-fire.webp" width="480" height="600" alt="">
+      <picture>
+        <source media="(max-width: 700px)" srcset="assets/img/film-lane-m.webp">
+        <img class="intro__last" src="assets/img/est-lane.webp" width="2000" height="1338" style="object-position:56% 55%" alt="">
+      </picture>
+    </div>
+  </div>
+  <div class="intro__ui" aria-hidden="true">
+    <p>Португалия<br>18–24 апреля 2027</p>
+    <b data-intro-count>0</b>
+  </div>
+  <script>
+    if (document.documentElement.classList.contains('has-intro'))
+      [].forEach.call(document.querySelectorAll('.intro img[data-src]'), function (i) { i.src = i.getAttribute('data-src'); });
+  </script>
 
   <div class="hero__body">
     <p class="hero__eyebrow">Авторская психологическая программа Марины Нахаловой</p>
@@ -528,6 +553,6 @@
   <a class="dock__btn" href="apply.html" tabindex="-1">Подать заявку<i aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></i></a>
 </div>
 
-<script src="assets/js/main.js?v=2138991917" defer></script>
+<script src="assets/js/main.js?v=1832829115" defer></script>
 </body>
 </html>

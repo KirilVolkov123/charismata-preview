@@ -44,7 +44,7 @@
      Скрипт сам размечает блоки и ставит класс rv-on; если он не загрузился, ничего не прячется. */
   (() => {
     if (reduce || !('IntersectionObserver' in window)) return;
-    const BLOCKS = '.sheet h2, .sheet .lead, .head__sub, .about p:not(.lead), .states li, .marina__text > p:not(.lead), .listen__stage, .playlist li, .more, .team, .levels li, .method__text > p:not(.lead), .method__sub, .steps li, .days__title, .day, .change__text p:not(.lead), .change__big, .practices__head p, .practices__list li, .head--wide > div > p:not(.lead), .food, .circle p:not(.lead), .rules > div, .sub, .offer__head > p:not(.lead), .offer__panel, .flow li, .join__note, .split__head > p:not(.lead), .formbox, .ftr__panel';
+    const BLOCKS = '.sheet h2, .sheet .lead, .head__sub, .about p:not(.lead), .states li, .marina__text > p:not(.lead), .listen__stage, .playlist li, .more, .team, .levels li, .method__text > p:not(.lead), .method__sub, .steps li, .days__title, .day, .change__text p:not(.lead), .change__big, .head--wide > div > p:not(.lead), .circle p:not(.lead), .rules > div, .sub, .offer__head > p:not(.lead), .offer__panel, .flow li, .join__note, .split__head > p:not(.lead), .formbox, .ftr__panel';
     $$(BLOCKS).forEach(el => { if (!el.closest('[data-rv]')) el.setAttribute('data-rv', ''); });
     // соседние блоки появляются по очереди
     $$('[data-rv]').forEach(el => {
